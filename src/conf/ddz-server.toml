@@ -1,0 +1,126 @@
+[CfgLeafSvr]
+    LogLevel="debug"
+	LogPath= ""
+	TCPAddr= ":3550"
+	WSAddr= ":3658"
+	HTTPAddr= ":8084"
+	MaxConnNum= 20000
+	DBUrl= "mongodb://localhost"
+	DBMaxConnNum= 100
+	DBName="czdzz"
+	RebateRate=0.8
+    TaskFreeChange=24
+	Level=10
+	Chips=8000  #绑定上级送8000金币
+	FamilyActivity=true
+	RoomCard=8  #新人送八张房卡
+	FirstLogin=6000 #新人送6000金币
+	PrimaryStart=0
+	PrimaryEnd=24
+	HighStart=19
+	HighEnd=21
+  [CfgRank]
+  ShowRankLen=100   #显示排行榜前多少名
+  UpdateRankTime=1 #多久刷新一次排行榜榜单 时
+
+[CfgDDZ]
+     DefaultAndroidDownloadUrl = "https://www.shenzhouxing.com/czddz/dl/"
+     DefaultIOSDownloadUrl     = "https://www.shenzhouxing.com/czddz/dl/"
+     Gamename ="斗地主"
+     AndroidVersion=1
+     IOSVersion=1
+     AndroidGuestLogin =false
+     IOSGuestLogin =false
+     Notice="斗地主"
+     Radio="维护和谐游戏环境，严禁作弊通牌行为，违者封号处理 "
+     WeChatNumber="yintan19"
+     DefaultAvatar="https://www.shenzhouxing.com/gd/dl/img/avatar.jpg"
+     EnterAddress=false
+     CardCodeDesc="每天登录游戏获取取牌码,进入圈圈进行麻将全家福活动,赢取大奖"
+
+	
+ [[CfgMatchs]]
+    BaseScore=500
+	MinScore=1000
+	MaxScore=60000
+	Tickets=240
+	
+	
+[[CfgMatchs]]  
+    BaseScore=3000
+	MinScore=30000
+	MaxScore=999999999
+	Tickets=1800
+	
+[[CfgMatchs]]  
+    BaseScore=10000
+	MinScore=100000
+	MaxScore=999999999	
+	Tickets=3600
+
+[CfgTimeout]
+ ConnectTimeout=3 #连接授权验证连接时间 秒
+ HeartTimeout=120  #心跳维持时间 秒
+ LandlordBid= 5    #叫地主的准备时间 秒
+ LandlordGrab= 3   #抢地主的准备时间 秒
+ LandlordDouble= 3 #加倍的准备时间   秒
+ LandlordShowCards      = 3  #明牌的准备时间 秒
+ LandlordDiscard        = 20 #出牌的准备时间 秒
+ LandlordDiscardNothing = 3  
+ 
+[CfgLink]
+  CircleLink="https://a.app.qq.com/o/simple.jsp?pkgname=com.youxibi.circle"
+
+[[CfgActivityTimes]]
+   TaskID = 1017 #活动期间成功邀请2位好友
+   Start = "2018-05-09-0-0-0" #格式：年-月-日-时-分-秒
+   End = "2018-05-18-0-0-0"
+   Deadline = "2018-05-19-20-0-0"
+[[CfgActivityTimes]]
+   TaskID = 1018 #活动期间完成18次红包比赛
+   Start = "2018-04-28-0-0-0"
+   End = "2018-05-06-0-0-0"
+   Deadline = "2018-05-07-20-0-0"
+
+[CfgRedpacketCode]
+ Url="http://api.circle.shenzhouxing.com/server.do"
+ PartnerKey="youxibi_shenzhouxing_circle"
+ SecretKey="60DEA282CCC3891C4C15C7719A750B8C"
+ Method="shenzhouxing.circle.create.packet.code"
+
+[CfgCard]
+   PlayTimes=3
+
+[CfgMatchItems]
+    [CfgMatchItems.1]
+	Chips=100000
+	Desc="1千-6万"
+    [CfgMatchItems.2]
+	Chips=3000
+	Desc="三万以上"
+    [CfgMatchItems.3]
+	Chips=10000
+	Desc="10万以上"
+[CfgRedPacketItems.1]
+	Chips=20000
+	Desc="1元红包场"
+	RedPacketType=1
+	Clock=["00:00:00-23:59:59"]
+    [CfgRedPacketItems.2]
+	Chips=150000
+	Desc="10元红包场"
+	RedPacketType=10
+	Clock=["13:00:00-14:00:00","20:00:00-22:00:00"]
+    [CfgRedPacketItems.3]
+	Chips=1280000
+	Desc="100元红包场"
+	RedPacketType=100
+	IsPrivate=true
+	Clock=["00:00:00-23:59:59"]
+    [CfgRedPacketItems.4]
+	Chips=11980000
+	Desc="999元红包场"
+	RedPacketType=999
+	IsPrivate=true
+	Clock=["00:00:00-23:59:59"]
+	

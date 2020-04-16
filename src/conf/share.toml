@@ -1,0 +1,57 @@
+[[CfgShareTasks]]
+    ID=4001
+	Real=true
+	Total=2
+	Fee=1.0
+	Desc="连胜两局"
+	Info="获得1元"
+
+[[CfgShareTasks]]
+    ID=4002
+	Real=false
+	Total=5
+	Fee=1.0
+	Desc="打出五个连对"
+	Info="获得幸运红包"
+[[CfgShareTasks]]
+    ID=4003
+	Real=true
+	Total=3
+	Fee=2.0
+	Desc="打出三个炸弹"
+	Info="获得2元"
+[[CfgShareTasks]]
+    ID=4004
+	Real=false
+	Total=1
+	Fee=8.0
+	Desc="充值10"
+	Info="返利8元"
+[[CfgShareTasks]]
+    ID=4005
+	Real=false
+	Total=8
+	Fee=8.0
+	Desc="普通场当地主8次"
+	Info="获得幸运红包"
+[[CfgShareTasks]]
+    ID=4006
+	Real=true
+	Total=1
+	Fee=80.0
+	Desc="充值100元"
+	Info="返利80元"
+[[CfgShareTasks]]
+    ID=4007
+	Real=true
+	Total=5
+	Fee=5.0
+	Desc="明牌获胜5次"
+	Info="获得5元"
+[[CfgShareTasks]]
+    ID=4008
+	Real=false
+	Total=0
+	Fee=0.0
+	Desc="充值任意金额"
+	Info="即可获得返利80%"
