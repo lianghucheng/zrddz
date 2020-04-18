@@ -467,7 +467,8 @@ func (roomm *LandlordRoom) StartGame() {
 			roomm.doTask(userID, 26) // 累计明牌开始2次，奖励2000金币
 			roomm.doTask(userID, 27) // 累计明牌开始3次，奖励3000金币
 			//初级任务 累计明牌开始10次 1012
-			playerData.user.updateRedPacketTask(1012)
+			//fmt.Println("************玩家明牌:***************")
+			//playerData.user.updateRedPacketTask(1012)
 			broadcast(&msg.S2C_LandlordShowCards{
 				Position: playerData.position,
 			}, roomm.positionUserIDs, -1)
@@ -604,7 +605,9 @@ func (roomm *LandlordRoom) EndGame() {
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(3009)
 		}
 		//新人任务 累计对局10局 1000
-		roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(1000)
+		if roomm.rule.RoomType == roomBaseScoreMatching {
+			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(1000)
+		}
 		roomm.doTask(userID, 5)  // 累计对局10局
 		roomm.doTask(userID, 17) // 累计对局5局，奖励2000金币
 		roomm.doTask(userID, 18) // 累计对局10局，奖励3000金币
@@ -990,8 +993,10 @@ func (roomm *LandlordRoom) decideWinner() {
 	for _, userID := range roomm.winnerUserIDs {
 		//初级任务 明牌获胜3次 1015
 		//高级任务 明牌获胜5次 3007
+
 		if roomm.userIDPlayerDatas[userID].showCards {
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(1015)
+			
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(3007)
 
 		}

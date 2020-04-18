@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"msg"
 	"time"
 
@@ -60,7 +61,18 @@ func (user *User) sendRedpacketTask(level int) {
 			data = append(data, task)
 		}
 	case 3:
-
+		for _, value := range conf.GetCfgHighTask() {
+			task := msg.RedPacketTask{
+				ID:    value.ID,
+				Real:  value.Real,
+				Total: value.Total,
+				Fee:   value.Fee,
+				Desc:  value.Desc,
+				Jump:  value.Jump,
+				Type:  value.Type,
+			}
+			data = append(data, task)
+		}
 	}
 	/*
 	  查找当自己的任务类型
@@ -84,6 +96,14 @@ func (user *User) sendRedpacketTask(level int) {
 		index := data[len(data)-1].ID
 		//判断是否添加了新的红包任务,添加新的红包任务
 		if user.baseData.userData.Level == 1 {
+			for key, value := range tasks.Tasks {
+				for _, v := range conf.GetCfgPrimaryTask() {
+					if value.ID == v.ID && value.Desc != v.Desc {
+						tasks.Tasks[key].Desc = v.Desc
+						break
+					}
+				}
+			}
 			if index < conf.GetCfgPrimaryTask()[len(conf.GetCfgPrimaryTask())-1].ID {
 				for _, value := range conf.GetCfgPrimaryTask() {
 					if index < value.ID {
@@ -103,6 +123,14 @@ func (user *User) sendRedpacketTask(level int) {
 		}
 
 		if user.baseData.userData.Level == 2 {
+			for key, value := range tasks.Tasks {
+				for _, v := range conf.GetCfgMiddleTask() {
+					if value.ID == v.ID && value.Desc != v.Desc {
+						tasks.Tasks[key].Desc = v.Desc
+						break
+					}
+				}
+			}
 			if index < conf.GetCfgMiddleTask()[len(conf.GetCfgMiddleTask())-1].ID {
 				for _, value := range conf.GetCfgMiddleTask() {
 					if index < value.ID {
@@ -121,6 +149,14 @@ func (user *User) sendRedpacketTask(level int) {
 			}
 		}
 		if user.baseData.userData.Level == 3 {
+			for key, value := range tasks.Tasks {
+				for _, v := range conf.GetCfgHighTask() {
+					if value.ID == v.ID && value.Desc != v.Desc {
+						tasks.Tasks[key].Desc = v.Desc
+						break
+					}
+				}
+			}
 			if index < conf.GetCfgHighTask()[len(conf.GetCfgHighTask())-1].ID {
 				for _, value := range conf.GetCfgHighTask() {
 					if index < value.ID {
@@ -190,10 +226,18 @@ func (user *User) delRedPacketTask() {
 //更新当前任务
 
 func (user *User) updateRedPacketTask(taskId int) {
+	if v, ok := userIDRooms[user.baseData.userData.UserID]; ok {
+		r := v.(*LandlordRoom)
+		if r.rule.RoomType != roomBaseScoreMatching {
+			return
+		}
+	}
 	if user.isRobot() {
 		return
 
 	}
+	fmt.Println("******************当前玩家正在执行的任务:", user.getPlayingTask())
+	fmt.Println("**************************taskid:", taskId)
 	db := mongoDB.Ref()
 	defer mongoDB.UnRef(db)
 	if user.getPlayingTask() == taskId && user.LastTaskId == 0 {

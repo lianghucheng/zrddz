@@ -194,9 +194,17 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 		user.WriteMsg(&msg.S2C_CreateRoom{Error: msg.S2C_CreateRoom_RuleError})
 		return
 	}
-	if !checkRedPacketMatchingTime() {
-		user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
-		return
+	if redPacketType == 1 {
+		if !checkRedPacketMatchingTime() {
+			user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
+			return
+		}
+	}
+	if redPacketType == 10 {
+		if !checkRedPacketPrivateMatchingTime() {
+			user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
+			return
+		}
 	}
 	var minChips int64
 	switch redPacketType {

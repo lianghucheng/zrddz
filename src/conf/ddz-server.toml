@@ -1,5 +1,5 @@
 [CfgLeafSvr]
-    LogLevel="debug"
+    LogLevel="release"
 	LogPath= ""
 	TCPAddr= ":3550"
 	WSAddr= ":3658"

@@ -114,6 +114,7 @@ func init() {
 	Processor.Register(&S2C_RedPacketTaskRecord{})
 	Processor.Register(&C2S_CardCodeState{})
 	Processor.Register(&C2S_TakeTaskState{})
+	Processor.Register(&S2C_CircleLink{})
 }
 
 type C2S_Heartbeat struct{}

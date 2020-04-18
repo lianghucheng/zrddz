@@ -25,7 +25,7 @@
 	Real=false
 	Total=1
 	Fee=8.0
-	Desc="充值10"
+	Desc="充值10元"
 	Info="返利8元"
 [[CfgShareTasks]]
     ID=4005
@@ -54,4 +54,4 @@
 	Total=0
 	Fee=0.0
 	Desc="充值任意金额"
-	Info="即可获得返利80%"
+	Info="返利80%"

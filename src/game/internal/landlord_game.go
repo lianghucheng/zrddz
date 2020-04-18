@@ -58,9 +58,11 @@ func (room *LandlordRoom) decideLandlord(userID int) {
 	room.landlordUserID = userID
 	playerData := room.userIDPlayerDatas[room.landlordUserID]
 	//新人任务 累计当地主5次 1002
-	playerData.user.updateRedPacketTask(1002)
-	//初级任务 当地主10次 （1010）
-	playerData.user.updateRedPacketTask(1010)
+	if room.rule.RoomType == roomBaseScoreMatching {
+		playerData.user.updateRedPacketTask(1002)
+		//初级任务 当地主10次 （1010）
+		playerData.user.updateRedPacketTask(1010)
+	}
 	if room.rule.BaseScore == 3000 {
 		//中级任务 普通场当地主8次 2006
 		playerData.user.updateRedPacketTask(2006)
@@ -488,7 +490,8 @@ func (room *LandlordRoom) doShowCards(userID int, showCards bool) {
 			NumberOfHands: len(playerData.hands),
 			ShowCards:     true,
 		}, room.positionUserIDs, playerData.position)
-
+         //初级任务 累计明牌开始10次 1012
+			playerData.user.updateRedPacketTask(1012)
 		//高级任务  普通场明牌开始10次 3005
 		if room.rule.BaseScore == 3000 {
 			playerData.user.updateRedPacketTask(3005)
