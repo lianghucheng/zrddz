@@ -249,7 +249,7 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 					Rmb2Chip[rmb].AddChip,
 					Rmb2Chip[rmb].GiveChip,
 				),
-				temp.TotalAmount * 100,
+				temp.TotalAmount,
 				2,
 				)
 		}
