@@ -92,6 +92,7 @@ func WriteRechageRecord (userData *UserData, createdAt int64, desc string, value
 	rechargeRedcord := &RechargeRecord{
 		CreatedAt: createdAt,
 		AccountID:userData.AccountID,
+		NickName:userData.Nickname,
 		Desc:desc,
 		Value:value,
 		Channel:channel,

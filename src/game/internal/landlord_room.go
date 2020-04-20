@@ -1020,7 +1020,9 @@ func (roomm *LandlordRoom) decideWinner() {
 	case roomRedPacketMatching, roomRedPacketPrivate:
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
-			WriteRedPacketGrantRecord(playerData.user.baseData.userData, 3, fmt.Sprintf("红包匹配： %v", playerData.roundResult.RedPacket), playerData.roundResult.RedPacket)
+			if !playerData.user.isRobot() {
+				WriteRedPacketGrantRecord(playerData.user.baseData.userData, 3, fmt.Sprintf("红包匹配： %v", playerData.roundResult.RedPacket), playerData.roundResult.RedPacket)
+			}
 			saveRedPacketMatchResultData(&RedPacketMatchResultData{
 				UserID:        userID,
 				RedPacketType: roomm.rule.RedPacketType,
