@@ -125,6 +125,7 @@ func (user *User) takeTaskPrize(taskID int) {
 		if redPacketCounter%200 == 0 {
 			redPacket += float64(rand.Intn(3)) + 1
 		}
+		redPacket = common.Decimal(redPacket)
 		userID := user.baseData.userData.UserID
 
 		go func() {
@@ -134,6 +135,7 @@ func (user *User) takeTaskPrize(taskID int) {
 				return
 			}
 			takeRedPacketTaskPrizeSuccess(userID, taskID, redPacket, exchangeCode)
+			WriteRedPacketGrantRecord(user.baseData.userData, 1, TaskList[taskID].Desc, redPacket)
 			redPacketCounter++
 		}()
 	case taskChip:

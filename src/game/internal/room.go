@@ -47,6 +47,9 @@ type room struct {
 	ownerUserID     int         // 房主 userID
 	number          string
 	desc            string
+	startTimestamp          int64 // 开始时间
+	eachRoundStartTimestamp int64 // 每一局开始时间
+	endTimestamp            int64 // 结束时间
 }
 
 func init() {

@@ -1,12 +1,40 @@
 package internal
 
 import (
+	"common"
+	"fmt"
 	"msg"
 	"time"
 
 	"github.com/name5566/leaf/log"
 	"gopkg.in/mgo.v2/bson"
 )
+
+var Rmb2Chip = map[float64]struct{
+	AddChip		int64
+	GiveChip	int64
+}{
+	1 : {
+		AddChip:8800,
+		GiveChip:0,
+	},
+	6:{
+		AddChip:52800,
+		GiveChip:2800,
+	},
+	12 : {
+		AddChip:102000,
+		GiveChip:14000,
+	},
+	50 : {
+		AddChip:440000,
+		GiveChip:110000,
+	},
+	100 : {
+		AddChip:880000,
+		GiveChip:356000,
+	},
+}
 
 // 验证用户是否存在，存在则存储订单信息
 func startWXPayOrder(outTradeNo string, accountID, totalFee int, cb func()) {
@@ -84,6 +112,19 @@ func finishWXPayOrder(outTradeNo string, totalFee int, valid bool) {
 		if userData != nil {
 			userData.rebate(float64(temp.TotalFee) / 100.0)
 			userData.countRecharge(float64(temp.TotalFee) / 100.0)
+
+			rmb := common.Decimal(float64(temp.TotalFee) / 100.0)
+			WriteRechageRecord(
+				userData,
+				temp.UpdatedAt,
+				fmt.Sprintf("%v金币（%v金币，赠送%v金币）",
+					Rmb2Chip[rmb].AddChip + Rmb2Chip[rmb].GiveChip,
+					Rmb2Chip[rmb].AddChip,
+					Rmb2Chip[rmb].GiveChip,
+				),
+				rmb,
+				1,
+			)
 		}
 		addChips := int64(temp.TotalFee) * 100
 		switch temp.TotalFee {
@@ -199,6 +240,18 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 		if userData != nil {
 			userData.rebate(float64(temp.TotalAmount))
 			userData.countRecharge(float64(temp.TotalAmount))
+			rmb := temp.TotalAmount
+			WriteRechageRecord(
+				userData,
+				temp.UpdatedAt,
+				fmt.Sprintf("%v金币（%v金币，赠送%v金币）",
+					Rmb2Chip[rmb].AddChip + Rmb2Chip[rmb].GiveChip,
+					Rmb2Chip[rmb].AddChip,
+					Rmb2Chip[rmb].GiveChip,
+				),
+				temp.TotalAmount * 100,
+				2,
+				)
 		}
 		addChips := int64(temp.TotalAmount * 10000)
 		switch temp.TotalAmount {
