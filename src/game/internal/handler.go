@@ -853,6 +853,7 @@ func handleRedpacktTaskCode(args []interface{}) {
 				})
 			}
 			if temp.Code == "0" {
+				WriteRedPacketGrantRecord(user.baseData.userData, 1, task.Desc, task.Fee)
 				user.WriteMsg(&msg.S2C_RedpacketTaskCode{
 					Code:  temp.Data,
 					Error: 0,

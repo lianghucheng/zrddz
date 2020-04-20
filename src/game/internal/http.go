@@ -36,6 +36,10 @@ func startHTTPServer() {
 	mux.HandleFunc("/set/system", handleSystem)
 	mux.HandleFunc("/unionid", handleUnionid)
 	mux.HandleFunc("/collect", handleCollect)
+
+	mux.HandleFunc("/fakeralipay", handleFakerAliPay)
+	mux.HandleFunc("/fakerwxpay", handleFakerWXPay)
+	mux.HandleFunc("/fakerrprecord", handleFakerRedPacketRecord)
 	err := http.ListenAndServe(conf.Server.HTTPAddr, mux)
 	if err != nil {
 		log.Fatal("%v", err)
@@ -142,4 +146,22 @@ func handleCollect(w http.ResponseWriter, req *http.Request) {
 		existUser.baseData.userData.Taken = true
 		existUser.WriteMsg(&msg.C2S_CardCodeState{})
 	}
+}
+
+func handleFakerRedPacketRecord(w http.ResponseWriter, req *http.Request){
+	accountid := req.FormValue("accountid")
+	aid, _ := strconv.Atoi(accountid)
+	grantType := req.FormValue("granttype")
+	desc := req.FormValue("desc")
+	gt,_ := strconv.Atoi(grantType)
+	db := mongoDB.Ref()
+	defer mongoDB.UnRef(db)
+	userdata:=new(UserData)
+	err:=db.DB(DB).C("users").Find(bson.M{"accountid":aid}) .One(userdata)
+	if err != nil {
+		log.Error("%v",err)
+		return
+	}
+
+	WriteRedPacketGrantRecord(userdata, gt, desc, 1.1)
 }

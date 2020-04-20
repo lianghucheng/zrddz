@@ -4,6 +4,7 @@ import (
 	"common"
 	"conf"
 	"encoding/json"
+	"fmt"
 	"game/circle"
 
 	"github.com/globalsign/mgo"
@@ -261,6 +262,7 @@ func (userData *UserData) rebate(fee float64) {
 
 	grandParentID = userData.ParentId
 	fee = common.Decimal(fee * conf.Server.RebateRate / float64(count))
+
 	//更新上级的可领取收益
 	for i := 0; i < count; i++ { //往上轮询
 		grandParentID = userData.pollingGiveAchievement(fee, 0, grandParentID, i+1)
@@ -299,6 +301,8 @@ func (userData *UserData) pollingGiveAchievement(fee, recharge float64, parentID
 		log.Error(err.Error())
 		return -1
 	}
+
+	WriteRedPacketGrantRecord(parentUserData, 2, fmt.Sprintf("%v级下级充值“%v”元，进行返利", level, fee), fee)
 
 	_, datas := shareAbleProfitAndDatas(level, parentID)
 	data := findAgentData(datas, int64(userData.AccountID))

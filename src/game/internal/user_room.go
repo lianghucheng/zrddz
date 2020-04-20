@@ -282,8 +282,7 @@ func (user *User) enterBaseScoreMatchingRoom(baseScore int, playerNumber int) bo
 func (user *User) enterRedPacketMatchingRoom(redPacketType int, playerNumber int) bool {
 	for _, r := range roomNumberRooms {
 		room := r.(*LandlordRoom)
-		//!room.loginIPs[user.baseData.userData.LoginIP] &&
-		if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber {
+		if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber {
 			if !room.playTogether(user) {
 				user.enterRoom(r)
 				return true

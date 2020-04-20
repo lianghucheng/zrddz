@@ -92,6 +92,7 @@ type LandlordPlayerData struct {
 	taskID51 int // 单局打出2个顺子3次
 
 	roundResults []poker.LandlordPlayerRoundResult
+	originHands []int
 }
 
 func newLandlordRoom(rule *poker.LandlordRule) *LandlordRoom {
@@ -444,6 +445,7 @@ func (roomm *LandlordRoom) StartGame() {
 		}
 		// 手牌有十七张
 		playerData.hands = append(playerData.hands, roomm.rests[:17]...)
+		playerData.originHands = playerData.hands
 		// 排序
 		sort.Sort(sort.Reverse(sort.IntSlice(playerData.hands)))
 		log.Debug("userID %v 手牌: %v", userID, poker.ToCardsString(playerData.hands))
@@ -593,6 +595,52 @@ func (roomm *LandlordRoom) EndGame() {
 			roomm.calculateChips(userID, playerData.roundResult.Chips) // 结算筹码
 		}
 	}
+
+	roomm.endTimestamp = time.Now().Unix()
+	//保存战绩
+	room := roomm
+	for _, userID := range room.positionUserIDs {
+		playerData := room.userIDPlayerDatas[userID]
+		if playerData.user.isRobot() {
+			continue
+		}
+		amount := playerData.user.baseData.userData.Chips
+		if playerData.roundResult.Chips > 0 {
+			amount += playerData.roundResult.Chips
+		}
+		r := &GameRecord{
+			AccountId:      playerData.user.baseData.userData.AccountID,
+			Desc:           room.desc,
+			RoomNumber:     room.number,
+			Profit:         playerData.roundResult.Chips,
+			Amount:         amount,
+			StartTimestamp: room.eachRoundStartTimestamp,
+			EndTimestamp:   room.endTimestamp,
+			Nickname:       playerData.user.baseData.userData.Nickname,
+			IsSpring:       room.spring,
+			LastThree:      poker.ToCardsString(room.lastThree),
+		}
+		for _, userID := range room.positionUserIDs {
+			playerData := room.userIDPlayerDatas[userID]
+			re := ResultData{
+				AccountId:  playerData.user.baseData.userData.AccountID,
+				Nickname:   playerData.user.baseData.userData.Nickname,
+				Hands:      poker.ToCardsString(playerData.originHands),
+				Chips:      playerData.roundResult.Chips,
+				Headimgurl: playerData.user.baseData.userData.Headimgurl,
+				Dealer:     playerData.dealer,
+			}
+			if room.rule.RoomType == roomRedPacketMatching {
+				re.Chips = int64(-room.rule.BaseScore)
+			}
+			r.Results = append(r.Results, re)
+		}
+		if room.rule.RoomType == roomRedPacketMatching {
+			r.Profit = -int64(room.rule.BaseScore)
+		}
+		saveGameRecord(r)
+	}
+
 	for _, userID := range roomm.positionUserIDs {
 		if user, ok := userIDUsers[userID]; ok {
 			user.WriteMsg(&msg.S2C_UpdateUserChips{
@@ -775,6 +823,8 @@ func (roomm *LandlordRoom) prepare() {
 	} else {
 		roomm.dealerUserID = roomm.getShowCardsUserIDs()[0]
 	}
+	roomm.startTimestamp = time.Now().Unix()
+	roomm.eachRoundStartTimestamp = roomm.startTimestamp
 	dealerPlayerData := roomm.userIDPlayerDatas[roomm.dealerUserID]
 	dealerPlayerData.dealer = true
 	// 确定闲家(注：闲家的英文单词也为player)
@@ -970,6 +1020,7 @@ func (roomm *LandlordRoom) decideWinner() {
 	case roomRedPacketMatching, roomRedPacketPrivate:
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
+			WriteRedPacketGrantRecord(playerData.user.baseData.userData, 3, fmt.Sprintf("红包匹配： %v", playerData.roundResult.RedPacket), playerData.roundResult.RedPacket)
 			saveRedPacketMatchResultData(&RedPacketMatchResultData{
 				UserID:        userID,
 				RedPacketType: roomm.rule.RedPacketType,
