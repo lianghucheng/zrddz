@@ -123,11 +123,23 @@ func (user *User) createOrEnterBaseScoreMatchingRoom(baseScore int) {
 	if !user.checkRoomMaxChips(int64(data.MaxScore), false) {
 		return
 	}
-	if user.enterBaseScoreMatchingRoom(baseScore, 2) {
-		return
+	//优先进入真实玩家场
+	if !user.isRobot() {
+		if user.enterBaseScoreMatchingRoom(baseScore, 2, true) {
+			return
+		}
+		if user.enterBaseScoreMatchingRoom(baseScore, 1, true) {
+			return
+		}
 	}
-	if user.enterBaseScoreMatchingRoom(baseScore, 1) {
-		return
+	//后续加入机器人场
+	if user.isRobot() {
+		if user.enterBaseScoreMatchingRoom(baseScore, 2, false) {
+			return
+		}
+		if user.enterBaseScoreMatchingRoom(baseScore, 1, false) {
+			return
+		}
 	}
 	tickets := data.Tickets
 	minChips := data.MinScore
@@ -216,11 +228,22 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 	if !user.checkRoomMinChips(minChips, false) {
 		return
 	}
-	if user.enterRedPacketMatchingRoom(redPacketType, 2) {
-		return
+	//真实玩家优先跟真实玩家一起打红包赛
+	if user.isRobot() {
+		if user.enterRedPacketMatchingRoom(redPacketType, 2, true) {
+			return
+		}
+		if user.enterRedPacketMatchingRoom(redPacketType, 1, true) {
+			return
+		}
 	}
-	if user.enterRedPacketMatchingRoom(redPacketType, 1) {
-		return
+	if !user.isRobot() {
+		if user.enterRedPacketMatchingRoom(redPacketType, 2, false) {
+			return
+		}
+		if user.enterRedPacketMatchingRoom(redPacketType, 1, false) {
+			return
+		}
 	}
 	if user.isRobot() { // 只进入房间不创建房间
 		user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_Unknown})
@@ -262,30 +285,65 @@ func (user *User) createRedPacketPrivateRoom(redPacketType int) {
 	user.createLandlordRoom(rule)
 }
 
-func (user *User) enterBaseScoreMatchingRoom(baseScore int, playerNumber int) bool {
+/*
+
+//如果房间里面有一个真实玩家,可以先加入一个机器人(房间最多只能有一个机器人)
+		lable := false
+		if room.RealPlayer() == 1 && user.isRobot() {
+			lable = true
+		}
+
+		//如果房间里面有两个
+		if room.RealPlayer() != 2 && user.isRobot() && !room.RealPlayer() == 1 {
+
+		}
+
+*/
+func (user *User) enterBaseScoreMatchingRoom(baseScore int, playerNumber int, real bool) bool {
 	for _, r := range roomNumberRooms {
 		room := r.(*LandlordRoom)
-		if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber {
-			/*
-				if !room.playTogether(user) {
+		if real {
+			if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && room.RealPlayer() == playerNumber {
+				//if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber {
+				/*
+					if !room.playTogether(user) {
+						user.enterRoom(r)
+						return true
+					}
+				*/
+				user.enterRoom(r)
+				return true
+			}
+		} else {
+			if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+				if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber {
 					user.enterRoom(r)
 					return true
 				}
-			*/
-			user.enterRoom(r)
-			return true
+			}
+
 		}
 	}
 	return false
 }
 
-func (user *User) enterRedPacketMatchingRoom(redPacketType int, playerNumber int) bool {
+func (user *User) enterRedPacketMatchingRoom(redPacketType int, playerNumber int, real bool) bool {
 	for _, r := range roomNumberRooms {
 		room := r.(*LandlordRoom)
-		if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber {
-			if !room.playTogether(user) {
-				user.enterRoom(r)
-				return true
+		//!room.loginIPs[user.baseData.userData.LoginIP] &&
+		if real {
+			if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && room.RealPlayer() == playerNumber {
+				if !room.playTogether(user) {
+					user.enterRoom(r)
+					return true
+				}
+			}
+		} else {
+			if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+				if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber {
+					user.enterRoom(r)
+					return true
+				}
 			}
 		}
 	}

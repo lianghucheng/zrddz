@@ -228,7 +228,7 @@ func (user *User) delRedPacketTask() {
 func (user *User) updateRedPacketTask(taskId int) {
 	if v, ok := userIDRooms[user.baseData.userData.UserID]; ok {
 		r := v.(*LandlordRoom)
-		if r.rule.RoomType != roomBaseScoreMatching {
+		if r.rule.RoomType != roomBaseScoreMatching && taskId != 1003 {
 			return
 		}
 	}

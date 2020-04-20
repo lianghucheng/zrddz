@@ -128,6 +128,16 @@ func (roomm *LandlordRoom) getShowCardsUserIDs() []int {
 	return userIDs
 }
 
+func (roomm *LandlordRoom) RealPlayer() int {
+	count := 0
+	for _, userID := range roomm.positionUserIDs {
+		playerData := roomm.userIDPlayerDatas[userID]
+		if !playerData.user.isRobot() {
+			count++
+		}
+	}
+	return count
+}
 func (roomm *LandlordRoom) allReady() bool {
 	if !roomm.full() {
 		return false
@@ -666,6 +676,9 @@ func (roomm *LandlordRoom) EndGame() {
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(2003)
 		}
 	}
+	for _, p := range roomm.userIDPlayerDatas {
+		p.user.LastTaskId = 0
+	}
 	if roomm.rule.RoomType == roomVIPPrivate {
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
@@ -1049,7 +1062,7 @@ func (roomm *LandlordRoom) decideWinner() {
 
 		if roomm.userIDPlayerDatas[userID].showCards {
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(1015)
-			
+
 			roomm.userIDPlayerDatas[userID].user.updateRedPacketTask(3007)
 
 		}
