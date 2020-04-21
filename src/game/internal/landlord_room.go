@@ -620,7 +620,7 @@ func (roomm *LandlordRoom) EndGame() {
 		}
 		r := &GameRecord{
 			AccountId:      playerData.user.baseData.userData.AccountID,
-			Desc:           room.desc,
+			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets,room.rule.BaseScore, playerData.multiple),
 			RoomNumber:     room.number,
 			Profit:         playerData.roundResult.Chips,
 			Amount:         amount,
@@ -1033,7 +1033,7 @@ func (roomm *LandlordRoom) decideWinner() {
 	case roomRedPacketMatching, roomRedPacketPrivate:
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
-			if !playerData.user.isRobot() {
+			if !playerData.user.isRobot() && playerData.roundResult.RedPacket > 0 {
 				WriteRedPacketGrantRecord(playerData.user.baseData.userData, 3, fmt.Sprintf("红包匹配： %v", playerData.roundResult.RedPacket), playerData.roundResult.RedPacket)
 			}
 			saveRedPacketMatchResultData(&RedPacketMatchResultData{
