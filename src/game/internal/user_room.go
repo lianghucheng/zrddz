@@ -225,11 +225,12 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 	default:
 		minChips = int64(redPacketType) * 10000
 	}
+
 	if !user.checkRoomMinChips(minChips, false) {
 		return
 	}
 	//真实玩家优先跟真实玩家一起打红包赛
-	if user.isRobot() {
+	if !user.isRobot() {
 		if user.enterRedPacketMatchingRoom(redPacketType, 2, true) {
 			return
 		}
@@ -237,7 +238,7 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 			return
 		}
 	}
-	if !user.isRobot() {
+	if user.isRobot() {
 		if user.enterRedPacketMatchingRoom(redPacketType, 2, false) {
 			return
 		}
@@ -254,6 +255,7 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 		MaxPlayers:    3,
 		RedPacketType: redPacketType,
 		MinChips:      minChips,
+		BaseScore:     int(minChips),
 	}
 	user.createLandlordRoom(rule)
 }
