@@ -87,12 +87,12 @@ type LandlordPlayerData struct {
 
 	roundResult *poker.LandlordPlayerRoundResult
 
-	hosted   bool // 是否被托管
-	vipChips int64
-	taskID51 int // 单局打出2个顺子3次
-
+	hosted       bool // 是否被托管
+	vipChips     int64
+	taskID51     int // 单局打出2个顺子3次
+	taskID2001   int // 单局打出两个炸弹
 	roundResults []poker.LandlordPlayerRoundResult
-	originHands []int
+	originHands  []int
 }
 
 func newLandlordRoom(rule *poker.LandlordRule) *LandlordRoom {
@@ -592,6 +592,11 @@ func (roomm *LandlordRoom) EndGame() {
 				roomm.doTask(userID, 62) // 单局打出2个顺子5次
 			}
 
+			if playerData.taskID2001 > 1 {
+				//中级任务 单局打出两个炸弹一次
+				playerData.user.updateRedPacketTask(2001)
+			}
+
 			roomm.calculateChips(userID, playerData.roundResult.Chips) // 结算筹码
 		case roomRedPacketMatching, roomRedPacketPrivate:
 			//新人任务 参加一次红包赛  1003
@@ -620,7 +625,7 @@ func (roomm *LandlordRoom) EndGame() {
 		}
 		r := &GameRecord{
 			AccountId:      playerData.user.baseData.userData.AccountID,
-			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets,room.rule.BaseScore, playerData.multiple),
+			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets, room.rule.BaseScore, playerData.multiple),
 			RoomNumber:     room.number,
 			Profit:         playerData.roundResult.Chips,
 			Amount:         amount,

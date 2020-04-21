@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"msg"
 	"time"
 
@@ -30,6 +29,24 @@ func (user *User) sendRedpacketTask(level int) {
 
 	}
 	data := make([]msg.RedPacketTask, 0)
+	if level > 3 {
+		if user.baseData.NoReceiveRedpacketTask == nil {
+			user.baseData.NoReceiveRedpacketTask = make([]msg.RedPacketTask, 0)
+		}
+		data = append(user.baseData.NoReceiveRedpacketTask, data[:]...)
+		user.baseData.NoReceiveRedpacketTask = make([]msg.RedPacketTask, 0)
+		user.baseData.redPacketTaskList = data
+
+		user.baseData.TaskId = user.getPlayingTask()
+
+		user.WriteMsg(&msg.S2C_RedpacketTask{
+			Tasks:          data,
+			Chips:          ChangeChips[user.baseData.userData.Level],
+			FreeChangeTime: user.baseData.userData.FreeChangedAt,
+		})
+		user.saveRedPacketTask(data)
+		return
+	}
 	switch level {
 	case 1:
 		//已经完成的任务
@@ -236,8 +253,6 @@ func (user *User) updateRedPacketTask(taskId int) {
 		return
 
 	}
-	fmt.Println("******************当前玩家正在执行的任务:", user.getPlayingTask())
-	fmt.Println("**************************taskid:", taskId)
 	db := mongoDB.Ref()
 	defer mongoDB.UnRef(db)
 	if user.getPlayingTask() == taskId && user.LastTaskId == 0 {

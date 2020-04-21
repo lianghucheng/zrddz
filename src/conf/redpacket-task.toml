@@ -8,7 +8,7 @@
 [[CfgPrimaryTasks]]
     ID=1000
 	Real=true
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场对局10局"
 	Jump=0
@@ -16,7 +16,7 @@
 [[CfgPrimaryTasks]]
     ID=1001
 	Real=true
-	Total=2
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场连胜2局"
 	Jump=0
@@ -24,7 +24,7 @@
 [[CfgPrimaryTasks]]
     ID=1002
 	Real=true
-	Total=5
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场当地主5次"
 	Jump=0
@@ -48,7 +48,7 @@
 [[CfgPrimaryTasks]]
     ID=1005
 	Real=true
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场胜利10局"
 	Jump=0
@@ -56,7 +56,7 @@
 [[CfgPrimaryTasks]]
     ID=1006
 	Real=true
-	Total=3
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出3个飞机"
 	Jump=0
@@ -64,7 +64,7 @@
 [[CfgPrimaryTasks]]
     ID=1007
 	Real=false
-	Total=5
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出5个连对"
 	Jump=0
@@ -72,7 +72,7 @@
 [[CfgPrimaryTasks]]
     ID=1008
 	Real=true
-	Total=3
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场打出3个炸弹"
 	Jump=0
@@ -80,7 +80,7 @@
 [[CfgPrimaryTasks]]
     ID=1009
 	Real=false
-	Total=3
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出3个王炸"
 	Jump=0
@@ -88,7 +88,7 @@
 [[CfgPrimaryTasks]]
     ID=1010
 	Real=true
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场当地主10次"
 	Jump=0
@@ -96,7 +96,7 @@
 [[CfgPrimaryTasks]]
     ID=1011
 	Real=true
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场抢地主10次"
 	Jump=0
@@ -104,7 +104,7 @@
 [[CfgPrimaryTasks]]
     ID=1012
 	Real=true
-	Total=10
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场明牌开始10次"
 	Jump=0
@@ -120,7 +120,7 @@
 [[CfgPrimaryTasks]]
     ID=1014
 	Real=false
-	Total=5
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场地主身份获胜5局"
 	Jump=0
@@ -128,7 +128,7 @@
 [[CfgPrimaryTasks]]
     ID=1015
 	Real=false
-	Total=3
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场明牌获胜3次"
 	Jump=0
@@ -136,7 +136,7 @@
 [[CfgPrimaryTasks]]
     ID=1016
 	Real=false
-	Total=4
+	Total=1
 	Fee=1.0
 	Desc="菜鸟场加倍底分4次"
 	Jump=0
@@ -145,7 +145,7 @@
 [[CfgMiddleTasks]]
     ID=2000
 	Real=true
-	Total=5
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出5个王炸"
 	Type=3
@@ -153,7 +153,7 @@
 [[CfgMiddleTasks]]
     ID=2001
 	Real=true
-	Total=2
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场单局打出两个炸弹"
 	Type=3
@@ -161,7 +161,7 @@
 [[CfgMiddleTasks]]
     ID=2002
 	Real=true
-	Total=10
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场打出10个连对"
 	Type=3
@@ -169,7 +169,7 @@
 [[CfgMiddleTasks]]
     ID=2003
 	Real=false
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="普通场累计对局10次"
 	Type=4
@@ -177,7 +177,7 @@
 [[CfgMiddleTasks]]
     ID=2004
 	Real=false
-	Total=6
+	Total=1
 	Fee=1.0
 	Desc="普通场打出6个顺子"
 	Type=4
@@ -185,7 +185,7 @@
 [[CfgMiddleTasks]]
     ID=2005
 	Real=false
-	Total=4
+	Total=1
 	Fee=1.0
 	Desc="普通场加倍底分4次"
 	Type=4
@@ -193,7 +193,7 @@
 [[CfgMiddleTasks]]
     ID=2006
 	Real=false
-	Total=8
+	Total=1
 	Fee=1.0
 	Desc="普通场当地主8次"
 	Type=4
@@ -201,7 +201,7 @@
 [[CfgMiddleTasks]]
     ID=2007
 	Real=true
-	Total=6
+	Total=1
 	Fee=2.0
 	Desc="普通场叫叫地主6次"
 	Type=3
@@ -209,7 +209,7 @@
 [[CfgMiddleTasks]]
     ID=2008
 	Real=false
-	Total=5
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场连胜5局"
 	Type=4
@@ -217,7 +217,7 @@
 [[CfgMiddleTasks]]
     ID=2009
 	Real=false
-	Total=8
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出8次三带二"
 	Type=4
@@ -225,7 +225,7 @@
 [[CfgMiddleTasks]]
     ID=2010
 	Real=false
-	Total=3
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出3次四带二"
 	Type=4
@@ -233,7 +233,7 @@
 [[CfgMiddleTasks]]
     ID=2011
 	Real=true
-	Total=10
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场以地主的身份获胜10次"
 	Type=3
@@ -243,7 +243,7 @@
 [[CfgHighTasks]]
     ID=3000
 	Real=true
-	Total=5
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场单局打出两个顺子5次"
 	Type=3
@@ -251,7 +251,7 @@
 [[CfgHighTasks]]
     ID=3001
 	Real=true
-	Total=20
+	Total=1
 	Fee=2.0
 	Desc="在任意金币场当地主20次"
 	Type=3
@@ -259,7 +259,7 @@
 [[CfgHighTasks]]
     ID=3002
 	Real=false
-	Total=8
+	Total=1
 	Fee=1.0
 	Desc="普通场打出8次三带二"
 	Type=4
@@ -267,7 +267,7 @@
 [[CfgHighTasks]]
     ID=3003
 	Real=false
-	Total=3
+	Total=1
 	Fee=1.0
 	Desc="普通场打出3次四带二"
 	Type=4
@@ -275,7 +275,7 @@
 [[CfgHighTasks]]
     ID=3004
 	Real=false
-	Total=8
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场连胜8局"
 	Type=4
@@ -284,7 +284,7 @@
 [[CfgHighTasks]]
     ID=3005
 	Real=false
-	Total=10
+	Total=1
 	Fee=1.0
 	Desc="普通场明牌开始10次"
 	Type=4
@@ -292,7 +292,7 @@
 [[CfgHighTasks]]
     ID=3006
 	Real=true
-	Total=2
+	Total=1
 	Fee=1.0
 	Desc="在任意金币场打出2个春天"
 	Type=4
@@ -300,7 +300,7 @@
 [[CfgHighTasks]]
     ID=3007
 	Real=true
-	Total=5
+	Total=1
 	Fee=5.0
 	Desc="在任意金币场明牌获胜5次"
 	Type=3
@@ -308,7 +308,7 @@
 [[CfgHighTasks]]
     ID=3008
 	Real=false
-	Total=8
+	Total=1
 	Fee=2.0
 	Desc="普通场加倍底分8次"
 	Type=4
@@ -316,7 +316,7 @@
 [[CfgHighTasks]]
     ID=3009
 	Real=true
-	Total=5
+	Total=1
 	Fee=5.0
 	Desc="参与土豪场10次"
 	Type=3
