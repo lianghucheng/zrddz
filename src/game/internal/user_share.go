@@ -302,7 +302,9 @@ func (userData *UserData) pollingGiveAchievement(fee, recharge float64, parentID
 		return -1
 	}
 
-	WriteRedPacketGrantRecord(parentUserData, 2, fmt.Sprintf("%v级下级充值“%v”元，进行返利", level, fee), fee)
+	if fee > 0 {
+		WriteRedPacketGrantRecord(parentUserData, 2, fmt.Sprintf("%v级下级充值“%v”元，进行返利", level, fee), fee)
+	}
 
 	_, datas := shareAbleProfitAndDatas(level, parentID)
 	data := findAgentData(datas, int64(userData.AccountID))
