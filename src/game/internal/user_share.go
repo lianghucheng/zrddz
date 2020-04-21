@@ -302,8 +302,6 @@ func (userData *UserData) pollingGiveAchievement(fee, recharge float64, parentID
 		return -1
 	}
 
-	WriteRedPacketGrantRecord(parentUserData, 2, fmt.Sprintf("%v级下级充值“%v”元，进行返利", level, fee), fee)
-
 	_, datas := shareAbleProfitAndDatas(level, parentID)
 	data := findAgentData(datas, int64(userData.AccountID))
 	if data == nil {
@@ -592,7 +590,7 @@ func (user *User) receiveProfit(level int) {
 		return
 	}
 	exchangeCode := user.baseData.userData.giveShareAward(fee, int64(user.baseData.userData.AccountID), level)
-
+	WriteRedPacketGrantRecord(user.baseData.userData, 2, fmt.Sprintf("%v级下级充值“%v”元，进行返利", level, common.Decimal(fee/0.8)), fee)
 	for i := 0; i < len(datas); i++ {
 		datas[i].updateIncAgent(level, int64(user.baseData.userData.AccountID), map[string]float64{"profit": -datas[i].Profit})
 	}
