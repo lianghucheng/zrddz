@@ -234,8 +234,8 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 		PlayTimes:       user.baseData.userData.PlayTimes,
 		Total:           conf.GetCfgCard().PlayTimes,
 		Parentid:        user.baseData.userData.ParentId,
-		GivenChips:      conf.Server.Chips,
-		FirstLoginChips: conf.Server.FirstLogin,
+		GivenChips:      conf.Server.Chips,      //绑定赠送的金币数量
+		FirstLoginChips: conf.Server.FirstLogin, //首次登录赠送的金币
 	})
 
 	if conf.Server.FamilyActivity {
@@ -246,7 +246,6 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 			Completed: user.baseData.userData.CardCode != "",
 		})
 	}
-	user.requestCircleID()
 	user.WriteMsg(&msg.S2C_CircleLink{
 		Url: conf.GetCfgLink().CircleLink,
 	})

@@ -88,6 +88,7 @@ func updateUserData(id int, update interface{}) {
 
 func (data *UserData) updateWeChatInfo(info *msg.C2S_WeChatLogin) {
 	if data.UnionID == "" {
+		//表示新用户
 		data.UnionID = info.UnionID
 		switch data.UnionID {
 		case "o8c-nt6tO8aIBNPoxvXOQTVJUxY0":

@@ -7,7 +7,7 @@
 	MaxConnNum= 20000
 	DBUrl= "mongodb://localhost"
 	DBMaxConnNum= 100
-	DBName="czdzz"
+	DBName="czddz"
 	RebateRate=0.8
     TaskFreeChange=24
 	Level=2
