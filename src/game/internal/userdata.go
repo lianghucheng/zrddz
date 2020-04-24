@@ -43,6 +43,7 @@ type UserData struct {
 	PlayTimes       int    //当天对局次数
 	Level           int    //用户等级(初,中,高,完成10个任务自动升级）
 	Online          bool   //玩家是否在线
+	Channel			int    //渠道号。0：圈圈   1：搜狗
 }
 
 const defaultAvatar = "https://www.shenzhouxing.com/czddz/dl/img/logo.jpg"
