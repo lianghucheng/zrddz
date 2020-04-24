@@ -25,9 +25,11 @@
 [CfgDDZ]
      DefaultAndroidDownloadUrl = "https://www.shenzhouxing.com/czddz/dl/"
      DefaultIOSDownloadUrl     = "https://www.shenzhouxing.com/czddz/dl/"
+     DefaultSougouDownloadUrl  = "www.shenzhouxing.com/sougouddz/dl/android"
      Gamename ="斗地主"
      AndroidVersion=1
      IOSVersion=1
+     SougouVersion=1
      AndroidGuestLogin =false
      IOSGuestLogin =false
      Notice="斗地主"
