@@ -258,6 +258,8 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 	user.redpacketTaskRecord()
 	//请求圈圈
 	user.requestCircleID()
+
+	user.AskSubsidyChip()
 	/*
 		user.sendTaskList(firstLogin, func() {
 			user.WriteMsg(&msg.S2C_Login{

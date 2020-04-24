@@ -48,6 +48,8 @@ type LeafSvr struct {
 	OfferSubsidy   int64
 	LessChips      int64
 	Model          bool //false :表示测试环境  true:表示正式环境
+	SubsidyChip     int
+	SubsidyLine     int
 }
 type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string

@@ -115,6 +115,8 @@ func init() {
 	Processor.Register(&C2S_CardCodeState{})
 	Processor.Register(&C2S_TakeTaskState{})
 	Processor.Register(&S2C_CircleLink{})
+	Processor.Register(&C2S_SubsidyChip{})
+	Processor.Register(&S2C_SubsidyChip{})
 }
 
 type C2S_Heartbeat struct{}
@@ -253,4 +255,18 @@ type C2S_SetRobotData struct {
 	Chips   int64
 }
 type C2S_CardCodeState struct {
+}
+
+const (
+	SubsidyOK = 0
+	SubsidyMore = 1
+	SubsidyNotLack = 3
+)
+type S2C_SubsidyChip struct {
+	Error   int
+	Chip 	int
+}
+
+type C2S_SubsidyChip struct {
+	Reply 	bool
 }

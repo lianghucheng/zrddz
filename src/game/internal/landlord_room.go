@@ -552,6 +552,7 @@ func (roomm *LandlordRoom) EndGame() {
 		var roundResults []poker.LandlordPlayerRoundResult
 
 		playerData := roomm.userIDPlayerDatas[userID]
+		playerData.user.AskSubsidyChip()
 		roundResults = append(roundResults, poker.LandlordPlayerRoundResult{
 			Nickname:   playerData.user.baseData.userData.Nickname,
 			Headimgurl: playerData.user.baseData.userData.Headimgurl,
