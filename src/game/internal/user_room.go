@@ -5,6 +5,7 @@ import (
 	"conf"
 	"game/poker"
 	"msg"
+	"time"
 
 	"github.com/name5566/leaf/log"
 )
@@ -207,23 +208,24 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 		return
 	}
 	if redPacketType == 1 {
-		if !checkRedPacketMatchingTime() {
+		if time.Now().Hour() < conf.GetOneRedpacketInfo().Start || time.Now().Hour() > conf.GetOneRedpacketInfo().End {
 			user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
 			return
 		}
 	}
 	if redPacketType == 10 {
-		if !checkRedPacketPrivateMatchingTime() {
+		if time.Now().Hour() < conf.GetTenRedpacketInfo().Start || time.Now().Hour() > conf.GetTenRedpacketInfo().End {
 			user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
 			return
 		}
 	}
+
 	var minChips int64
 	switch redPacketType {
 	case 10:
-		minChips = 8 * 10000
+		minChips = conf.GetTenRedpacketInfo().Chips
 	default:
-		minChips = int64(redPacketType) * 10000
+		minChips = conf.GetOneRedpacketInfo().Chips
 	}
 
 	if !user.checkRoomMinChips(minChips, false) {
@@ -261,14 +263,14 @@ func (user *User) createOrEnterRedPacketMatchingRoom(redPacketType int) {
 }
 
 func (user *User) createRedPacketPrivateRoom(redPacketType int) {
-	if !checkRedPacketPrivateMatchingTime() {
+	if time.Now().Hour() < conf.GetHundredRedpacketInfo().Start || time.Now().Hour() > conf.GetHundredRedpacketInfo().End {
 		user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
 		return
 	}
 	var minChips int64
 	switch redPacketType {
 	case 100:
-		minChips = 50 * 10000
+		minChips = conf.GetHundredRedpacketInfo().Chips
 	case 999:
 		minChips = 498 * 10000
 	default:
@@ -305,25 +307,36 @@ func (user *User) enterBaseScoreMatchingRoom(baseScore int, playerNumber int, re
 	for _, r := range roomNumberRooms {
 		room := r.(*LandlordRoom)
 		if real {
-			if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && room.RealPlayer() == playerNumber && !room.full() {
-				//if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber {
-				/*
-					if !room.playTogether(user) {
-						user.enterRoom(r)
-						return true
-					}
-				*/
-				user.enterRoom(r)
-				return true
-			}
-		} else {
-			if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
-				if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber && !room.full() {
+			if !conf.Server.Model {
+				if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && room.RealPlayer() == playerNumber && !room.full() {
 					user.enterRoom(r)
 					return true
 				}
 			}
+			if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber {
 
+				if !room.playTogether(user) {
+					user.enterRoom(r)
+					return true
+				}
+			}
+		} else {
+			if !conf.Server.Model {
+				if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+					if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber && !room.full() {
+						user.enterRoom(r)
+						return true
+					}
+				}
+			}
+			if !room.loginIPs[user.baseData.userData.LoginIP] && room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+				if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == baseScore && len(room.positionUserIDs) == playerNumber && !room.full() {
+					if !room.playTogether(user) {
+						user.enterRoom(r)
+						return true
+					}
+				}
+			}
 		}
 	}
 	return false
@@ -334,17 +347,34 @@ func (user *User) enterRedPacketMatchingRoom(redPacketType int, playerNumber int
 		room := r.(*LandlordRoom)
 		//!room.loginIPs[user.baseData.userData.LoginIP] &&
 		if real {
-			if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && room.RealPlayer() == playerNumber && !room.full() {
-				if !room.playTogether(user) {
+			//测试环境
+			if !conf.Server.Model {
+				if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && room.RealPlayer() == playerNumber && !room.full() {
 					user.enterRoom(r)
 					return true
 				}
 			}
-		} else {
-			if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
-				if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber && !room.full() {
+			if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && room.RealPlayer() == playerNumber && !room.full() {
+				if !room.playTogether(user) {
 					user.enterRoom(r)
-					return true
+				}
+				return true
+			}
+		} else {
+			if !conf.Server.Model {
+				if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+					if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber && !room.full() {
+						user.enterRoom(r)
+						return true
+					}
+				}
+			}
+			if room.RealPlayer() == 1 && len(room.positionUserIDs) == 1 && user.isRobot() || !user.isRobot() || room.RealPlayer() == 2 {
+				if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == redPacketType && len(room.positionUserIDs) == playerNumber && !room.full() {
+					if !room.playTogether(user) {
+						user.enterRoom(r)
+						return true
+					}
 				}
 			}
 		}

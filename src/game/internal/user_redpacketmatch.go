@@ -10,32 +10,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// 检测红包比赛是否到开赛时间
-func checkRedPacketMatchingTime() bool {
-	nowTime := time.Now()
-	_19oclock := time.Date(nowTime.Year(), nowTime.Month(), nowTime.Day(), conf.Server.PrimaryStart, 0, 0, 0, time.Local)
-	_21oclock := time.Date(nowTime.Year(), nowTime.Month(), nowTime.Day(), conf.Server.PrimaryEnd, 0, 0, 0, time.Local)
-	// 小于19点、大于21点
-	if nowTime.Unix() < _19oclock.Unix() || nowTime.Unix() > _21oclock.Unix() {
-		log.Debug("未到开赛时间, 当前时间: %v", nowTime.Format("2006/01/02 15:04:05"))
-		return false
-	}
-	return true
-}
-
-// 检测红包比赛是否到开赛时间
-func checkRedPacketPrivateMatchingTime() bool {
-	nowTime := time.Now()
-	_19oclock := time.Date(nowTime.Year(), nowTime.Month(), nowTime.Day(), conf.Server.HighStart, 0, 0, 0, time.Local)
-	_21oclock := time.Date(nowTime.Year(), nowTime.Month(), nowTime.Day(), conf.Server.HighEnd, 0, 0, 0, time.Local)
-	// 小于19点、大于21点
-	if nowTime.Unix() < _19oclock.Unix() || nowTime.Unix() > _21oclock.Unix() {
-		log.Debug("未到开赛时间, 当前时间: %v", nowTime.Format("2006/01/02 15:04:05"))
-		return false
-	}
-	return true
-}
-
 // 计算红包比赛在线人数
 func calculateRedPacketMatchOnlineNumber(redPacketType int) {
 	switch redPacketType {
@@ -52,12 +26,19 @@ func calculateRedPacketMatchOnlineNumber(redPacketType int) {
 
 // 发送红包比赛在线人数
 func (user *User) sendRedPacketMatchOnlineNumber() {
-	if !checkRedPacketMatchingTime() {
+	//一元红包场
+	if time.Now().Hour() < conf.GetOneRedpacketInfo().Start || time.Now().Hour() > conf.GetOneRedpacketInfo().End {
 		redPacketMatchOnlineNumber[0] = 0
-		redPacketMatchOnlineNumber[1] = 0
-		redPacketMatchOnlineNumber[2] = 0
-		redPacketMatchOnlineNumber[3] = 0
 	}
+	//十元红包场
+	if time.Now().Hour() < conf.GetTenRedpacketInfo().Start || time.Now().Hour() > conf.GetTenRedpacketInfo().End {
+		redPacketMatchOnlineNumber[1] = 0
+	}
+	if time.Now().Hour() < conf.GetHundredRedpacketInfo().Start || time.Now().Hour() > conf.GetHundredRedpacketInfo().End {
+		redPacketMatchOnlineNumber[2] = 0
+	}
+	//十元红包场
+	redPacketMatchOnlineNumber[3] = 0
 	user.WriteMsg(&msg.S2C_UpdateRedPacketMatchOnlineNumber{
 		Numbers: redPacketMatchOnlineNumber,
 	})

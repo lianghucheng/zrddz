@@ -91,6 +91,7 @@ func (room *LandlordRoom) decideLandlord(userID int) {
 
 	playerData.hands = append(playerData.hands, room.lastThree...)
 	playerData.taskID51 = 0 // 单局打出2个顺子3次计数初始化
+	playerData.taskID2001 = 0
 	sort.Sort(sort.Reverse(sort.IntSlice(playerData.hands)))
 
 	if user, ok := userIDUsers[userID]; ok {
@@ -616,9 +617,12 @@ func (room *LandlordRoom) doDiscard(userID int, cards []int) {
 	case poker.Bomb:
 		//初级任务 累计打出3个炸弹 1008
 		playerData.user.updateRedPacketTask(1008)
+		//中级任务 单局打出2个炸弹
+		//playerData.user.updateRedPacketTask(2001)
+		playerData.taskID2001++
 		room.doTask(userID, 3)  // 累计打出3个炸弹
 		room.doTask(userID, 25) // 累计打出3个炸弹，奖励3000金币
-		playerData.taskID2001++
+
 		room.doTask(userID, 30) // 打出4个炸弹
 		room.doTask(userID, 32) // 单局打出2个炸弹
 		room.doTask(userID, 34) // 打出5个炸弹

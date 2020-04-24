@@ -16,9 +16,11 @@ func getRandomTaskIDs(n, taskType int, fromTaskIDs []int) []int {
 	switch taskType {
 	case taskRedPacket:
 		taskIDs = common.Shuffle(fromTaskIDs)
-		if checkRedPacketMatchingTime() {
-			taskIDs = common.RemoveAll(taskIDs, 28)
-		}
+		taskIDs = common.RemoveAll(taskIDs, 28)
+		/*if checkRedPacketMatchingTime() {
+		            taskIDs = common.RemoveAll(taskIDs, 28)
+				}
+		*/
 	case taskChip:
 		taskIDs = common.Shuffle(ChipTaskIDs[2:])
 	default:

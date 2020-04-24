@@ -12,7 +12,7 @@
 	Fee=1.0
 	Desc="在任意金币场对局10局"
 	Jump=0
-	Type=1
+	Type=3
 [[CfgPrimaryTasks]]
     ID=1001
 	Real=true
@@ -20,7 +20,7 @@
 	Fee=1.0
 	Desc="在任意金币场连胜2局"
 	Jump=0
-	Type=1
+	Type=3
 [[CfgPrimaryTasks]]
     ID=1002
 	Real=true
@@ -28,7 +28,7 @@
 	Fee=2.0
 	Desc="在任意金币场当地主5次"
 	Jump=0
-	Type=1
+	Type=3
 [[CfgPrimaryTasks]]
     ID=1003
 	Real=true
@@ -36,7 +36,7 @@
 	Fee=2.0
 	Desc="参加一次红包比赛场"
 	Jump=0
-	Type=1
+	Type=3
 [[CfgPrimaryTasks]]
     ID=1004
 	Real=false
@@ -44,7 +44,7 @@
 	Fee=1.0
 	Desc="购买任意数量的金币"
 	Jump=0
-	Type=2
+	Type=4
 [[CfgPrimaryTasks]]
     ID=1005
 	Real=true

@@ -10,16 +10,19 @@ import (
 )
 
 type Config struct {
-	CfgLeafSvr        LeafSvr
-	CfgMatchs         []CfgMatch
-	CfgTimeout        CfgTimeout
-	CfgDDZ            CfgDDZ
-	CfgRank           CfgRank
-	CfgActivityTimes  []CfgActivityTime
-	CfgRedpacketCode  CfgRedpacketCode
-	CfgCard           CfgCard
-	CfgRedPacketItems map[string]RedPacketItem
-	CfgLink           CfgLink
+	CfgLeafSvr              LeafSvr
+	CfgMatchs               []CfgMatch
+	CfgTimeout              CfgTimeout
+	CfgDDZ                  CfgDDZ
+	CfgRank                 CfgRank
+	CfgActivityTimes        []CfgActivityTime
+	CfgRedpacketCode        CfgRedpacketCode
+	CfgCard                 CfgCard
+	CfgRedPacketItems       map[string]RedPacketItem
+	CfgLink                 CfgLink
+	CfgOneRedpacketInfo     CfgOneRedpacketInfo
+	CfgTenRedpacketInfo     CfgTenRedpacketInfo
+	CfgHundredRedpacketInfo CfgHundredRedpacketInfo
 }
 type LeafSvr struct {
 	LogLevel       string
@@ -42,10 +45,9 @@ type LeafSvr struct {
 	FamilyActivity bool
 	RoomCard       int
 	FirstLogin     int
-	PrimaryStart   int
-	PrimaryEnd     int
-	HighStart      int
-	HighEnd        int
+	OfferSubsidy   int64
+	LessChips      int64
+	Model          bool //false :表示测试环境  true:表示正式环境
 }
 type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string
@@ -115,6 +117,27 @@ type CfgLink struct {
 	CircleLink string
 }
 
+//一元红包场的配置信息
+type CfgOneRedpacketInfo struct {
+	Chips int64 //入场金币数
+	Start int   //入场开始时间
+	End   int   //入场结束时间
+}
+
+//10元红包场的配置信息
+type CfgTenRedpacketInfo struct {
+	Chips int64 //入场金币数
+	Start int   //入场开始时间
+	End   int   //入场结束时间
+}
+
+//100元红包场的配置信息
+type CfgHundredRedpacketInfo struct {
+	Chips int64 //入场金币数
+	Start int   //入场开始时间
+	End   int   // 入场结束时间
+}
+
 var Server LeafSvr
 var ServerConfig Config
 
@@ -176,4 +199,22 @@ func GetCfgRedPacketItems() map[string]RedPacketItem {
 
 func GetCfgLink() CfgLink {
 	return ServerConfig.CfgLink
+}
+
+//一元红包配置
+
+func GetOneRedpacketInfo() CfgOneRedpacketInfo {
+	return ServerConfig.CfgOneRedpacketInfo
+}
+
+//十元红包配置
+
+func GetTenRedpacketInfo() CfgTenRedpacketInfo {
+	return ServerConfig.CfgTenRedpacketInfo
+}
+
+//百元红包配置
+
+func GetHundredRedpacketInfo() CfgHundredRedpacketInfo {
+	return ServerConfig.CfgHundredRedpacketInfo
 }

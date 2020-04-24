@@ -47,7 +47,7 @@ func saveRedPacketMatchResultData(resultData *RedPacketMatchResultData) {
 			r.Sum = float64(temp.RedPacketType)
 			param, _ := json.Marshal(r)
 			json.Unmarshal(circle.DoRequestRepacketCode(string(param)), temp1)
-			log.Release("玩家用户Id:%v请求%v红包码出错:%v", temp.UserID, temp.RedPacketType, temp1.Code)
+			log.Release("玩家用户Id:%v请求%v红包码:%v", temp.UserID, temp.RedPacket, temp1.Data)
 			temp.CardCode = temp1.Data
 		}
 		err := db.DB(DB).C("redpacketmatchresult").Insert(temp)
