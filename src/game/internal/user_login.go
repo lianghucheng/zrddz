@@ -33,7 +33,7 @@ func (user *User) wechatLogin(info *msg.C2S_WeChatLogin) {
 			return
 		}
 		// new
-		err = userData.initValue()
+		err = userData.initValue(info.Channel)
 		if err != nil {
 			log.Error("load unionid %v data error: %v", info.UnionID, err)
 			userData = nil
@@ -70,7 +70,6 @@ func (user *User) wechatLogin(info *msg.C2S_WeChatLogin) {
 		userIDUsers[userData.UserID] = user
 		userData.updateWeChatInfo(info)
 		user.baseData.userData = userData
-		user.baseData.userData.Channel = info.Channel
 		user.onLogin(firstLogin, anotherLogin)
 		if firstLogin {
 			inviteTask(user.baseData.userData.UnionID)

@@ -44,7 +44,7 @@ func saveRedPacketMatchResultData(resultData *RedPacketMatchResultData) {
 				Data string
 			}{}
 			r := new(circle.RedPacketCodeInfo)
-			r.Sum = float64(temp.RedPacketType)
+			r.Sum = float64(temp.RedPacket)
 			param, _ := json.Marshal(r)
 			json.Unmarshal(circle.DoRequestRepacketCode(string(param)), temp1)
 			log.Release("玩家用户Id:%v请求%v红包码:%v", temp.UserID, temp.RedPacket, temp1.Data)

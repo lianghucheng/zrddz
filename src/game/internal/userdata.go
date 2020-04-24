@@ -43,12 +43,12 @@ type UserData struct {
 	PlayTimes       int    //当天对局次数
 	Level           int    //用户等级(初,中,高,完成10个任务自动升级）
 	Online          bool   //玩家是否在线
-	Channel			int    //渠道号。0：圈圈   1：搜狗
+	Channel         int    //渠道号。0：圈圈   1：搜狗
 }
 
 const defaultAvatar = "https://www.shenzhouxing.com/czddz/dl/img/logo.jpg"
 
-func (data *UserData) initValue() error {
+func (data *UserData) initValue(channel int) error {
 	userID, err := mongoDBNextSeq("users")
 	if err != nil {
 		return fmt.Errorf("get next users id error: %v", err)
@@ -58,6 +58,7 @@ func (data *UserData) initValue() error {
 	// data.AccountID = common.GetID(4) + strconv.Itoa(data.UserID)
 	data.AccountID = getAccountID()
 	data.CreatedAt = time.Now().Unix()
+	data.Channel = channel
 	return nil
 }
 
