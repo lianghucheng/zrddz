@@ -70,6 +70,7 @@ func (user *User) wechatLogin(info *msg.C2S_WeChatLogin) {
 		userIDUsers[userData.UserID] = user
 		userData.updateWeChatInfo(info)
 		user.baseData.userData = userData
+		user.baseData.userData.Channel = info.Channel
 		user.onLogin(firstLogin, anotherLogin)
 		if firstLogin {
 			inviteTask(user.baseData.userData.UnionID)
