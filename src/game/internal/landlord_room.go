@@ -229,12 +229,6 @@ func (roomm *LandlordRoom) Enter(user *User) bool {
 
 	switch roomm.rule.RoomType {
 	case roomBaseScoreMatching, roomRedPacketMatching:
-		if _, ok := roomm.loginIPs[user.baseData.userData.LoginIP]; ok {
-			user.WriteMsg(&msg.S2C_EnterRoom{
-				Error: msg.S2C_EnterRoom_IPConflict,
-			})
-			return false
-		}
 		roomm.loginIPs[user.baseData.userData.LoginIP] = true
 	}
 	for pos := 0; pos < roomm.rule.MaxPlayers; pos++ {
@@ -633,7 +627,7 @@ func (roomm *LandlordRoom) EndGame() {
 			Nickname:       playerData.user.baseData.userData.Nickname,
 			IsSpring:       room.spring,
 			LastThree:      poker.ToCardsString(room.lastThree),
-			Channel:		playerData.user.baseData.userData.Channel,
+			Channel:        playerData.user.baseData.userData.Channel,
 		}
 		for _, userID := range room.positionUserIDs {
 			playerData := room.userIDPlayerDatas[userID]
@@ -693,7 +687,7 @@ func (roomm *LandlordRoom) EndGame() {
 	skeleton.AfterFunc(1500*time.Millisecond, func() {
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
-			playerData.user.offerSubsidy()
+			//playerData.user.offerSubsidy()
 			roomm.sendRoundResult(userID, playerData.roundResults)
 		}
 		roomm.state = roomIdle

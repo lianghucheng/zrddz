@@ -15,11 +15,9 @@
 	FamilyActivity=true
 	RoomCard=8  #新人送八张房卡
 	FirstLogin=6000 #新人送6000金币
-	OfferSubsidy=2000 #破产补助金额
-	LessChips=1000 #玩家金币少于多少给予破产补助
-	Model=true
-	SubsidyLine = 20000
-    SubsidyChip = 40000
+	Model=false
+	SubsidyLine = 20000 #破产补助金额
+    SubsidyChip = 40000 #玩家金币少于多少给予破产补助
   [CfgRank]
   ShowRankLen=100   #显示排行榜前多少名
   UpdateRankTime=1 #多久刷新一次排行榜榜单 时
