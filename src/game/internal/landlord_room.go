@@ -633,6 +633,7 @@ func (roomm *LandlordRoom) EndGame() {
 			Nickname:       playerData.user.baseData.userData.Nickname,
 			IsSpring:       room.spring,
 			LastThree:      poker.ToCardsString(room.lastThree),
+			Channel:		playerData.user.baseData.userData.Channel,
 		}
 		for _, userID := range room.positionUserIDs {
 			playerData := room.userIDPlayerDatas[userID]
