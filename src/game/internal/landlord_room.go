@@ -229,7 +229,6 @@ func (roomm *LandlordRoom) Enter(user *User) bool {
 
 	switch roomm.rule.RoomType {
 	case roomBaseScoreMatching, roomRedPacketMatching:
-		fmt.Println("玩家的ip地址:%v", user.baseData.userData.LoginIP)
 		if _, ok := roomm.loginIPs[user.baseData.userData.LoginIP]; ok {
 			user.WriteMsg(&msg.S2C_EnterRoom{
 				Error: msg.S2C_EnterRoom_IPConflict,

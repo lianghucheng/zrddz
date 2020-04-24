@@ -611,6 +611,6 @@ func (user *User) takenProfit() {
 	}
 
 	user.WriteMsg(&msg.S2C_TakenProfit{
-		TakenProfit: takenProfit,
+		TakenProfit: common.Decimal(takenProfit),
 	})
 }
