@@ -10,15 +10,14 @@
 	DBName="czdzz"
 	RebateRate=0.8
     TaskFreeChange=24
-	Level=10
+	Level=2
 	Chips=8000  #绑定上级送8000金币
 	FamilyActivity=true
 	RoomCard=8  #新人送八张房卡
 	FirstLogin=6000 #新人送6000金币
-	PrimaryStart=0
-	PrimaryEnd=24
-	HighStart=19
-	HighEnd=21
+	OfferSubsidy=2000 #破产补助金额
+	LessChips=1000 #玩家金币少于多少给予破产补助
+	Model=true
   [CfgRank]
   ShowRankLen=100   #显示排行榜前多少名
   UpdateRankTime=1 #多久刷新一次排行榜榜单 时
@@ -91,6 +90,25 @@
 [CfgCard]
    PlayTimes=3
 
+#一元红包场的配置信息
+[CfgOneRedpacketInfo]
+ Chips=10000  #入场金币数
+ Start=0      #入场开始时间
+ End=24       #入场结束时间
+ 
+#10元红包场的配置信息
+[CfgTenRedpacketInfo]
+ Chips=80000  #入场金币数
+ Start=0      #入场开始时间
+ End=0       #入场结束时间
+ 
+
+ 
+#10元红包场的配置信息
+[CfgHundredRedpacketInfo]
+ Chips=500000  #入场金币数
+ Start=0       #入场开始时间
+ End=0         #入场结束时间
 [CfgMatchItems]
     [CfgMatchItems.1]
 	Chips=100000

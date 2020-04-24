@@ -863,7 +863,7 @@ func handleRedpacktTaskCode(args []interface{}) {
 				record := new(msg.RedpacketTaskRecord)
 				record.Createdat = time.Now().Unix()
 				record.Desc = task.Desc
-				record.Fee = task.Fee
+				record.Fee = r.Sum
 				record.ID = task.ID
 				record.Real = task.Real
 				record.Type = task.Type

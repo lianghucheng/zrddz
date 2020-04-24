@@ -87,12 +87,12 @@ type LandlordPlayerData struct {
 
 	roundResult *poker.LandlordPlayerRoundResult
 
-	hosted   bool // 是否被托管
-	vipChips int64
-	taskID51 int // 单局打出2个顺子3次
-
+	hosted       bool // 是否被托管
+	vipChips     int64
+	taskID51     int // 单局打出2个顺子3次
+	taskID2001   int // 单局打出两个炸弹
 	roundResults []poker.LandlordPlayerRoundResult
-	originHands []int
+	originHands  []int
 }
 
 func newLandlordRoom(rule *poker.LandlordRule) *LandlordRoom {
@@ -229,15 +229,14 @@ func (roomm *LandlordRoom) Enter(user *User) bool {
 
 	switch roomm.rule.RoomType {
 	case roomBaseScoreMatching, roomRedPacketMatching:
-		/*
-			if _, ok := roomm.loginIPs[user.baseData.userData.LoginIP]; ok {
-				user.WriteMsg(&msg.S2C_EnterRoom{
-					Error: msg.S2C_EnterRoom_IPConflict,
-				})
-				return false
-			}
-			roomm.loginIPs[user.baseData.userData.LoginIP] = true
-		*/
+		fmt.Println("玩家的ip地址:%v", user.baseData.userData.LoginIP)
+		if _, ok := roomm.loginIPs[user.baseData.userData.LoginIP]; ok {
+			user.WriteMsg(&msg.S2C_EnterRoom{
+				Error: msg.S2C_EnterRoom_IPConflict,
+			})
+			return false
+		}
+		roomm.loginIPs[user.baseData.userData.LoginIP] = true
 	}
 	for pos := 0; pos < roomm.rule.MaxPlayers; pos++ {
 		if _, ok := roomm.positionUserIDs[pos]; ok {
@@ -592,6 +591,11 @@ func (roomm *LandlordRoom) EndGame() {
 				roomm.doTask(userID, 62) // 单局打出2个顺子5次
 			}
 
+			if playerData.taskID2001 > 1 {
+				//中级任务 单局打出两个炸弹一次
+				playerData.user.updateRedPacketTask(2001)
+			}
+
 			roomm.calculateChips(userID, playerData.roundResult.Chips) // 结算筹码
 		case roomRedPacketMatching, roomRedPacketPrivate:
 			//新人任务 参加一次红包赛  1003
@@ -620,7 +624,7 @@ func (roomm *LandlordRoom) EndGame() {
 		}
 		r := &GameRecord{
 			AccountId:      playerData.user.baseData.userData.AccountID,
-			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets,room.rule.BaseScore, playerData.multiple),
+			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets, room.rule.BaseScore, playerData.multiple),
 			RoomNumber:     room.number,
 			Profit:         playerData.roundResult.Chips,
 			Amount:         amount,
@@ -1254,27 +1258,58 @@ func (roomm *LandlordRoom) changeTable(user *User) {
 			}
 		}
 	case roomBaseScoreMatching:
-		for _, r := range roomNumberRooms {
-			room := r.(*LandlordRoom)
-			if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == roomm.rule.BaseScore && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
-				if !room.playTogether(user) {
+		if conf.Server.Model {
+			for _, r := range roomNumberRooms {
+				room := r.(*LandlordRoom)
+				if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == roomm.rule.BaseScore && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
+					if !room.playTogether(user) {
+						user.enterRoom(r)
+						return
+					}
+				}
+			}
+			for _, r := range roomNumberRooms {
+				room := r.(*LandlordRoom)
+				if room.rule.RoomType == roomBaseScoreMatching && room.rule.BaseScore == roomm.rule.BaseScore && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
+
 					user.enterRoom(r)
 					return
+
 				}
 			}
 		}
 	case roomRedPacketMatching:
-		if !checkRedPacketMatchingTime() {
-			user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
-			return
+		// 一元红包场换房
+		if roomm.rule.RedPacketType == 1 {
+			if time.Now().Hour() < conf.GetOneRedpacketInfo().Start || time.Now().Hour() > conf.GetOneRedpacketInfo().End {
+				user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
+				return
+			}
+		}
+		if roomm.rule.RedPacketType == 10 {
+			if time.Now().Hour() < conf.GetTenRedpacketInfo().Start || time.Now().Hour() > conf.GetTenRedpacketInfo().End {
+				user.WriteMsg(&msg.S2C_EnterRoom{Error: msg.S2C_EnterRoom_NotRightNow})
+				return
+			}
+		}
+		if !conf.Server.Model {
+			for _, r := range roomNumberRooms {
+				room := r.(*LandlordRoom)
+				if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == roomm.rule.RedPacketType && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
+					if !room.playTogether(user) {
+						user.enterRoom(r)
+						return
+					}
+				}
+			}
 		}
 		for _, r := range roomNumberRooms {
 			room := r.(*LandlordRoom)
-			if !room.loginIPs[user.baseData.userData.LoginIP] && room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == roomm.rule.RedPacketType && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
-				if !room.playTogether(user) {
-					user.enterRoom(r)
-					return
-				}
+			if room.rule.RoomType == roomRedPacketMatching && room.rule.RedPacketType == roomm.rule.RedPacketType && !room.full() && room.ownerUserID != user.baseData.ownerUserID {
+
+				user.enterRoom(r)
+				return
+
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"msg"
 	"time"
 
@@ -30,6 +29,24 @@ func (user *User) sendRedpacketTask(level int) {
 
 	}
 	data := make([]msg.RedPacketTask, 0)
+	if level > 3 {
+		if user.baseData.NoReceiveRedpacketTask == nil {
+			user.baseData.NoReceiveRedpacketTask = make([]msg.RedPacketTask, 0)
+		}
+		data = append(user.baseData.NoReceiveRedpacketTask, data[:]...)
+		user.baseData.NoReceiveRedpacketTask = make([]msg.RedPacketTask, 0)
+		user.baseData.redPacketTaskList = data
+
+		user.baseData.TaskId = user.getPlayingTask()
+
+		user.WriteMsg(&msg.S2C_RedpacketTask{
+			Tasks:          data,
+			Chips:          ChangeChips[user.baseData.userData.Level],
+			FreeChangeTime: user.baseData.userData.FreeChangedAt,
+		})
+		user.saveRedPacketTask(data)
+		return
+	}
 	switch level {
 	case 1:
 		//已经完成的任务
@@ -92,14 +109,28 @@ func (user *User) sendRedpacketTask(level int) {
 
 	}
 	if err == nil {
+		if len(tasks.Tasks) == 0 {
+			user.baseData.userData.Level++
+			user.delRedPacketTask()
+			user.sendRedpacketTask(user.baseData.userData.Level)
+			return
+		}
 		data = tasks.Tasks
 		index := data[len(data)-1].ID
+		for _, value1 := range data {
+			if value1.ID > index {
+				index = value1.ID
+			}
+		}
+
 		//判断是否添加了新的红包任务,添加新的红包任务
 		if user.baseData.userData.Level == 1 {
 			for key, value := range tasks.Tasks {
 				for _, v := range conf.GetCfgPrimaryTask() {
 					if value.ID == v.ID && value.Desc != v.Desc {
 						tasks.Tasks[key].Desc = v.Desc
+						tasks.Tasks[key].Fee = v.Fee
+						tasks.Tasks[key].Total = v.Total
 						break
 					}
 				}
@@ -127,6 +158,8 @@ func (user *User) sendRedpacketTask(level int) {
 				for _, v := range conf.GetCfgMiddleTask() {
 					if value.ID == v.ID && value.Desc != v.Desc {
 						tasks.Tasks[key].Desc = v.Desc
+						tasks.Tasks[key].Fee = v.Fee
+						tasks.Tasks[key].Total = v.Total
 						break
 					}
 				}
@@ -153,6 +186,8 @@ func (user *User) sendRedpacketTask(level int) {
 				for _, v := range conf.GetCfgHighTask() {
 					if value.ID == v.ID && value.Desc != v.Desc {
 						tasks.Tasks[key].Desc = v.Desc
+						tasks.Tasks[key].Fee = v.Fee
+						tasks.Tasks[key].Total = v.Total
 						break
 					}
 				}
@@ -236,8 +271,6 @@ func (user *User) updateRedPacketTask(taskId int) {
 		return
 
 	}
-	fmt.Println("******************当前玩家正在执行的任务:", user.getPlayingTask())
-	fmt.Println("**************************taskid:", taskId)
 	db := mongoDB.Ref()
 	defer mongoDB.UnRef(db)
 	if user.getPlayingTask() == taskId && user.LastTaskId == 0 {
@@ -253,7 +286,7 @@ func (user *User) updateRedPacketTask(taskId int) {
 			user.baseData.redPacketTaskList[lable].State = 2 //状态变成领取
 			user.baseData.TaskCount++
 			//完成10个任务,玩家自动升级等级
-			if user.baseData.TaskCount == conf.Server.Level {
+			if user.baseData.TaskCount >= conf.Server.Level {
 				user.baseData.userData.Level++
 				/*
 										删除玩家原来的红包任务，但是不可以删除未被领取的红包任务

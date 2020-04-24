@@ -43,7 +43,7 @@ func generateMCR() {
 		err := db.DB(DB).C("users").FindId(result.UserID).One(&tempInfo)
 		if err != nil {
 			log.Error("month rank monthchips find user info error : %v", err)
-			return
+			continue
 		}
 		monthChipsRank = append(monthChipsRank, msg.MonthChipsRank{
 			UserID:     result.UserID,
@@ -72,7 +72,7 @@ func generateMWR() {
 		err := db.DB(DB).C("users").FindId(result.UserID).One(&tempInfo)
 		if err != nil {
 			log.Error("month rank monthwins find user info error : %v", err)
-			return
+			continue
 		}
 		monthWinsRank = append(monthWinsRank, msg.MonthWinsRank{
 			UserID:     result.UserID,
