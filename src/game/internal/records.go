@@ -15,8 +15,9 @@ type GameRecord struct {
 	EndTimestamp   int64        // 结束时间
 	Results        []ResultData //对战详情
 	Nickname       string       // 昵称
-	IsSpring		bool        //这一局是否为春天
+	IsSpring	   bool         //这一局是否为春天
 	LastThree	   []string     //三张底牌
+	Channel 	   int          //渠道号
 }
 
 type ResultData struct {
@@ -48,6 +49,7 @@ type RedPacketGrantRecord struct {
 	GrantType	int			//发放类型，1 为红包任务    2 为分享赚钱
 	Desc		string 		//原因
 	Value		float64		//金额
+	Channel     int 		//渠道号
 }
 
 func (ctx *RedPacketGrantRecord)Save() error {
@@ -64,6 +66,7 @@ func WriteRedPacketGrantRecord(userData *UserData, grantType int, desc string, f
 		GrantType:grantType,
 		Desc:desc,
 		Value:fee,
+		Channel:userData.Channel,
 	}
 
 	go func() {
@@ -80,6 +83,7 @@ type RechargeRecord struct {
 	Desc 		string 		//购买商品类型：金币、钻石
 	Value 		float64		//金额
 	Channel		int			//充值渠道	1. wxpay    2. alipay    3. applepay
+	DownChannel int			//渠道号
 }
 
 func (ctx *RechargeRecord) Save () error {
@@ -96,6 +100,7 @@ func WriteRechageRecord (userData *UserData, createdAt int64, desc string, value
 		Desc:desc,
 		Value:value,
 		Channel:channel,
+		DownChannel:userData.Channel,
 	}
 
 	go func() {
