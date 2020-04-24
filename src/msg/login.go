@@ -7,7 +7,7 @@ type C2S_WeChatLogin struct {
 	Serial     string // 安卓设备硬件序列号,例如:a1113028
 	Model      string // 安卓手机型号,例如:MI NOTE Pro
 	UnionID    string // 微信unionid
-	Channel    int    //渠道号。0：圈圈   1：搜狗
+	Channel    int    //渠道号。0：圈圈   1：搜狗   2:IOS
 }
 
 type C2S_TokenLogin struct {
