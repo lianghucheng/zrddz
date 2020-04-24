@@ -32,6 +32,7 @@
      SougouVersion=1
      AndroidGuestLogin =false
      IOSGuestLogin =false
+     SougouGuestLogin =false
      Notice="斗地主"
      Radio="维护和谐游戏环境，严禁作弊通牌行为，违者封号处理 "
      WeChatNumber="yintan19"

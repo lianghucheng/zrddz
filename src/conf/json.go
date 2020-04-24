@@ -52,13 +52,14 @@ type LeafSvr struct {
 type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string
 	DefaultIOSDownloadUrl     string
-	DefaultSougouDownloadUrl     string
+	DefaultSougouDownloadUrl  string
 	Gamename                  string
 	AndroidVersion            int
 	IOSVersion                int
 	SougouVersion			  int
 	AndroidGuestLogin         bool
 	IOSGuestLogin             bool
+	SougouGuestLogin          bool
 	Notice                    string
 	Radio                     string
 	WeChatNumber              string

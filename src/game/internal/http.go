@@ -29,6 +29,7 @@ func startHTTPServer() {
 	mux := http.NewServeMux()
 	mux.Handle("/czddz/android", http.HandlerFunc(handleCZDDZAndroid))
 	mux.Handle("/czddz/ios", http.HandlerFunc(handleCZDDZIOS))
+	mux.Handle("/czddz/sougou", http.HandlerFunc(handleCZDDZSougou))
 	mux.Handle("/alipay", http.HandlerFunc(handleAliPay))
 	mux.Handle("/wxpay", http.HandlerFunc(handleWXPay))
 	mux.Handle("/invite", http.HandlerFunc(handleInvite))
@@ -67,6 +68,22 @@ func handleCZDDZIOS(w http.ResponseWriter, req *http.Request) {
 	m["version"] = landlordConfigData.IOSVersion
 	m["downloadurl"] = landlordConfigData.IOSDownloadUrl
 	m["guestlogin"] = landlordConfigData.IOSGuestLogin
+	m["enteraddress"] = landlordConfigData.EnterAddress
+	m["online"] = len(userIDUsers)
+	data, err := json.Marshal(m)
+	if err != nil {
+		log.Error("marshal message %v error: %v", reflect.TypeOf(m), err)
+		return
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, "%s", data)
+}
+
+func handleCZDDZSougou(w http.ResponseWriter, req *http.Request) {
+	m := map[string]interface{}{}
+	m["version"] = landlordConfigData.SougouVersion
+	m["downloadurl"] = landlordConfigData.SougouDownloadUrl
+	m["guestlogin"] = landlordConfigData.SougouGuestLogin
 	m["enteraddress"] = landlordConfigData.EnterAddress
 	m["online"] = len(userIDUsers)
 	data, err := json.Marshal(m)
