@@ -68,6 +68,9 @@ func (user *User) wechatLogin(info *msg.C2S_WeChatLogin) {
 			userData = oldUser.baseData.userData
 		}
 		userIDUsers[userData.UserID] = user
+		if common.OneDay0ClockTimestamp(time.Now()) > userData.UpdatedAt {
+			WriteSougouActivityRecord()
+		}
 		userData.updateWeChatInfo(info)
 		user.baseData.userData = userData
 		user.onLogin(firstLogin, anotherLogin)

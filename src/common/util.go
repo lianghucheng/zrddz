@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -89,4 +90,8 @@ func GetTodayCode(n int) string {
 		newWords += todayCode[rand.Intn(len(todayCode))]
 	}
 	return newWords
+}
+
+func OneDay0ClockTimestamp(t time.Time) int64 {
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location()).Unix()
 }

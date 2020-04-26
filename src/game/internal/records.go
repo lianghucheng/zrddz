@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"common"
 	"github.com/name5566/leaf/log"
+	"gopkg.in/mgo.v2/bson"
 	"time"
 )
 
@@ -119,11 +121,17 @@ type SougouActivityRecord struct {
 func (ctx *SougouActivityRecord) Save () error {
 	se := mongoDB.Ref()
 	defer mongoDB.UnRef(se)
-	return se.DB(DB).C("sougou_activity_record").Insert(ctx)
+	_,err :=  se.DB(DB).C("sougou_activity_record").Upsert(
+		bson.M{"createdat" : common.OneDay0ClockTimestamp(time.Now())},
+		bson.M{"$inc" : bson.M{"num" : 1}})
+	return err
 }
 
-//func WriteSougouActivityRecord() {
-//	sougouActivityRecord := &SougouActivityRecord{
-//		Num:
-//	}
-//}
+func WriteSougouActivityRecord() {
+	sougouActivityRecord := &SougouActivityRecord{}
+	go func() {
+		if err := sougouActivityRecord.Save(); err != nil {
+			log.Error(err.Error())
+		}
+	}()
+}
