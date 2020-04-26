@@ -45,12 +45,10 @@ type LeafSvr struct {
 	FamilyActivity bool
 	RoomCard       int
 	FirstLogin     int
-	OfferSubsidy   int64
-	LessChips      int64
 	Model          bool //false :表示测试环境  true:表示正式环境
-	SubsidyChip     int
-	SubsidyLine     int
-	SubsidyTotal	int
+	SubsidyTotal   int  //补助次数
+	SubsidyChip    int  //破产补助金额
+	SubsidyLine    int  //资产低于多少给予破产补助
 }
 type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string
@@ -59,7 +57,7 @@ type CfgDDZ struct {
 	Gamename                  string
 	AndroidVersion            int
 	IOSVersion                int
-	SougouVersion			  int
+	SougouVersion             int
 	AndroidGuestLogin         bool
 	IOSGuestLogin             bool
 	SougouGuestLogin          bool
