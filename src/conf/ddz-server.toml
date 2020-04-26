@@ -105,16 +105,16 @@
 #10元红包场的配置信息
 [CfgTenRedpacketInfo]
  Chips=80000  #入场金币数
- Start=0      #入场开始时间
- End=0       #入场结束时间
+ Start=11      #入场开始时间
+ End=24       #入场结束时间
  
 
  
-#10元红包场的配置信息
+#100元红包场的配置信息
 [CfgHundredRedpacketInfo]
  Chips=500000  #入场金币数
- Start=0       #入场开始时间
- End=0         #入场结束时间
+ Start=11       #入场开始时间
+ End=24         #入场结束时间
 [CfgMatchItems]
     [CfgMatchItems.1]
 	Chips=100000
