@@ -638,7 +638,7 @@ func (roomm *LandlordRoom) EndGame() {
 				Hands:      poker.ToCardsString(playerData.originHands),
 				Chips:      playerData.roundResult.Chips,
 				Headimgurl: playerData.user.baseData.userData.Headimgurl,
-				Dealer:     playerData.dealer,
+				Dealer:     playerData.user.baseData.userData.UserID == room.landlordUserID,
 			}
 			if room.rule.RoomType == roomRedPacketMatching {
 				re.Chips = int64(-room.rule.BaseScore)
