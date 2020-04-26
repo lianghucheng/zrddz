@@ -109,3 +109,21 @@ func WriteRechageRecord (userData *UserData, createdAt int64, desc string, value
 		}
 	}()
 }
+
+//搜狗活跃人数统计
+type SougouActivityRecord struct {
+	Num		  	int
+	CreatedAt 	int64
+}
+
+func (ctx *SougouActivityRecord) Save () error {
+	se := mongoDB.Ref()
+	defer mongoDB.UnRef(se)
+	return se.DB(DB).C("sougou_activity_record").Insert(ctx)
+}
+
+//func WriteSougouActivityRecord() {
+//	sougouActivityRecord := &SougouActivityRecord{
+//		Num:
+//	}
+//}

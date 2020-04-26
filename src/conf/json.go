@@ -46,6 +46,7 @@ type LeafSvr struct {
 	RoomCard       int
 	FirstLogin     int
 	Model          bool //false :表示测试环境  true:表示正式环境
+	SubsidyTotal   int  //补助次数
 	SubsidyChip    int  //破产补助金额
 	SubsidyLine    int  //资产低于多少给予破产补助
 }
