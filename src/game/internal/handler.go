@@ -63,6 +63,7 @@ func init() {
 	handler(&msg.C2S_GetShareTaskInfo{}, handleShareTasks)
 	handler(&msg.C2S_GetRedpacketTaskCode{}, handleRedpacktTaskCode)
 	handler(&msg.C2S_SubsidyChip{}, handleSubsidyChip)
+	handler(&msg.C2S_IsExistSubsidy{}, handleIsExistSubsidy)
 }
 
 func handler(m interface{}, h interface{}) {
@@ -395,7 +396,6 @@ func handleLandlordMatching(args []interface{}) {
 		user.WriteMsg(&msg.S2C_CreateRoom{Error: msg.S2C_CreateRoom_InOtherRoom})
 		return
 	}
-	user.AskSubsidyChip()
 	switch m.RoomType {
 	case roomPractice:
 		user.createOrEnterPracticeRoom()
@@ -906,4 +906,19 @@ func handleSubsidyChip(args []interface{}) {
 	}
 
 	user.TakenSubsidyChip(m.Reply)
+}
+
+func handleIsExistSubsidy(args []interface{}) {
+	_ = args[0].(*msg.C2S_IsExistSubsidy)
+	a := args[1].(gate.Agent)
+	if a.UserData() == nil {
+		a.Close()
+		return
+	}
+	user := a.UserData().(*AgentInfo).user
+	if user == nil {
+		a.Close()
+		return
+	}
+	user.AskSubsidyChip()
 }

@@ -552,7 +552,6 @@ func (roomm *LandlordRoom) EndGame() {
 		var roundResults []poker.LandlordPlayerRoundResult
 
 		playerData := roomm.userIDPlayerDatas[userID]
-		playerData.user.AskSubsidyChip()
 		roundResults = append(roundResults, poker.LandlordPlayerRoundResult{
 			Nickname:   playerData.user.baseData.userData.Nickname,
 			Headimgurl: playerData.user.baseData.userData.Headimgurl,
@@ -610,6 +609,11 @@ func (roomm *LandlordRoom) EndGame() {
 		}
 	}
 
+	for _, userID := range roomm.positionUserIDs {
+		playerData := roomm.userIDPlayerDatas[userID]
+		playerData.user.AskSubsidyChip()
+	}
+
 	roomm.endTimestamp = time.Now().Unix()
 	//保存战绩
 	room := roomm
@@ -619,9 +623,6 @@ func (roomm *LandlordRoom) EndGame() {
 			continue
 		}
 		amount := playerData.user.baseData.userData.Chips
-		if playerData.roundResult.Chips > 0 {
-			amount += playerData.roundResult.Chips
-		}
 		r := &GameRecord{
 			AccountId:      playerData.user.baseData.userData.AccountID,
 			Desc:           fmt.Sprintf("门票：%v   底分：%v   倍数：%v", room.rule.Tickets, room.rule.BaseScore, playerData.multiple),
@@ -693,7 +694,7 @@ func (roomm *LandlordRoom) EndGame() {
 	skeleton.AfterFunc(1500*time.Millisecond, func() {
 		for _, userID := range roomm.positionUserIDs {
 			playerData := roomm.userIDPlayerDatas[userID]
-			playerData.user.offerSubsidy()
+			//playerData.user.offerSubsidy()
 			roomm.sendRoundResult(userID, playerData.roundResults)
 		}
 		roomm.state = roomIdle

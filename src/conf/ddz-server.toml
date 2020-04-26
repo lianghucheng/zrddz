@@ -19,7 +19,8 @@
 	LessChips=1000 #玩家金币少于多少给予破产补助
 	Model=true
 	SubsidyLine = 20000
-    SubsidyChip = 40000
+    SubsidyChip = 3000
+    SubsidyTotal = 2
   [CfgRank]
   ShowRankLen=100   #显示排行榜前多少名
   UpdateRankTime=1 #多久刷新一次排行榜榜单 时

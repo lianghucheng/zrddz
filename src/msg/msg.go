@@ -117,6 +117,7 @@ func init() {
 	Processor.Register(&S2C_CircleLink{})
 	Processor.Register(&C2S_SubsidyChip{})
 	Processor.Register(&S2C_SubsidyChip{})
+	Processor.Register(&C2S_IsExistSubsidy{})
 }
 
 type C2S_Heartbeat struct{}
@@ -265,8 +266,13 @@ const (
 type S2C_SubsidyChip struct {
 	Error   int
 	Chip 	int
+	SubsidyTimes	int
+	TotalTimes		int
 }
 
 type C2S_SubsidyChip struct {
 	Reply 	bool
+}
+
+type C2S_IsExistSubsidy struct {
 }
