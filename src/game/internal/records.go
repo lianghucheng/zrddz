@@ -143,6 +143,7 @@ type ChipsRecord struct {
 	NickName    string
 	AddChips 	int64
 	Chips 		int64
+	DownChannel int   //渠道号
 }
 
 func (ctx *ChipsRecord) Save() error {
@@ -164,6 +165,7 @@ func WriteChipsRecord(userData *UserData, addChip int64, actionType int) {
 		NickName    :userData.Nickname,
 		AddChips 	:addChip,
 		Chips 		:userData.Chips,
+		DownChannel :userData.Channel,
 	}
 
 	go func() {
