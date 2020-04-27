@@ -154,7 +154,6 @@ func finishWXPayOrder(outTradeNo string, totalFee int, valid bool) {
 			user.WriteMsg(&msg.S2C_UpdateUserChips{
 				Chips: user.baseData.userData.Chips,
 			})
-			WriteChipsRecord(user.baseData.userData, addChips, rechargeChip)
 			if user.isRobot() {
 				upsertRobotData(time.Now().Format("20060102"), bson.M{"$inc": bson.M{"recharge": addChips}})
 			}
@@ -163,6 +162,9 @@ func finishWXPayOrder(outTradeNo string, totalFee int, valid bool) {
 
 			addTaskProgress(temp.UserID, 11) // 购买任意数量金币
 			addTaskProgress(temp.UserID, 22) // 购买任意数量金币，奖励2000金币
+		}
+		if userData != nil {
+			WriteChipsRecord(userData, addChips, rechargeChip)
 		}
 	})
 }
@@ -282,7 +284,6 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 			user.WriteMsg(&msg.S2C_UpdateUserChips{
 				Chips: user.baseData.userData.Chips,
 			})
-			WriteChipsRecord(user.baseData.userData, addChips, rechargeChip)
 			if user.isRobot() {
 				upsertRobotData(time.Now().Format("20060102"), bson.M{"$inc": bson.M{"recharge": addChips}})
 			}
@@ -291,6 +292,10 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 
 			addTaskProgress(temp.UserID, 11) // 购买任意数量金币
 			addTaskProgress(temp.UserID, 22) // 购买任意数量金币，奖励2000金币
+		}
+
+		if userData != nil {
+			WriteChipsRecord(userData, addChips, rechargeChip)
 		}
 	})
 }
