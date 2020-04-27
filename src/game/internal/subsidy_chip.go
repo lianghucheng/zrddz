@@ -43,6 +43,7 @@ func (user *User) TakenSubsidyChip(reply bool) {
 				Chips: user.baseData.userData.Chips,
 			})
 			saveUserData(user.baseData.userData)
+			WriteChipsRecord(user.baseData.userData, int64(conf.Server.SubsidyChip), subsidyChip)
 		} else if user.baseData.userData.SubsidyTimes >= 2 {
 			user.WriteMsg(&msg.S2C_SubsidyChip{
 				Error: msg.SubsidyMore,

@@ -135,3 +135,40 @@ func WriteSougouActivityRecord() {
 		}
 	}()
 }
+
+type ChipsRecord struct {
+	AccountID	int
+	CreatedAt   int64
+	ActionType  int
+	NickName    string
+	AddChips 	int64
+	Chips 		int64
+}
+
+func (ctx *ChipsRecord) Save() error {
+	se := mongoDB.Ref()
+	defer mongoDB.UnRef(se)
+	return se.DB(DB).C("chip_record").Insert(ctx)
+}
+
+const (
+	rechargeChip = 1
+	subsidyChip = 2
+	SignInChip = 3
+)
+func WriteChipsRecord(userData *UserData, addChip int64, actionType int) {
+	chipsRecord := &ChipsRecord{
+		AccountID	:userData.AccountID,
+		CreatedAt   :time.Now().Unix(),
+		ActionType  :actionType,
+		NickName    :userData.Nickname,
+		AddChips 	:addChip,
+		Chips 		:userData.Chips,
+	}
+
+	go func() {
+		if err := chipsRecord.Save(); err != nil {
+			log.Error(err.Error())
+		}
+	}()
+}
