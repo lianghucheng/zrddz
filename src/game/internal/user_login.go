@@ -263,6 +263,7 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 	user.requestCircleID()
 	user.ShareInfo()
 
+	user.sendDailySignItems()
 	/*
 		user.sendTaskList(firstLogin, func() {
 			user.WriteMsg(&msg.S2C_Login{
