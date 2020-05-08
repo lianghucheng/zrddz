@@ -261,6 +261,7 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 	user.redpacketTaskRecord()
 	//请求圈圈
 	user.requestCircleID()
+	user.ShareInfo()
 
 	/*
 		user.sendTaskList(firstLogin, func() {
