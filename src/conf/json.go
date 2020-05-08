@@ -23,6 +23,7 @@ type Config struct {
 	CfgOneRedpacketInfo     CfgOneRedpacketInfo
 	CfgTenRedpacketInfo     CfgTenRedpacketInfo
 	CfgHundredRedpacketInfo CfgHundredRedpacketInfo
+	CfgDailySign			[]CfgDailySign
 }
 type LeafSvr struct {
 	LogLevel       string
@@ -142,6 +143,10 @@ type CfgHundredRedpacketInfo struct {
 	End   int   // 入场结束时间
 }
 
+type CfgDailySign struct {
+	Chips	int64
+}
+
 var Server LeafSvr
 var ServerConfig Config
 
@@ -221,4 +226,8 @@ func GetTenRedpacketInfo() CfgTenRedpacketInfo {
 
 func GetHundredRedpacketInfo() CfgHundredRedpacketInfo {
 	return ServerConfig.CfgHundredRedpacketInfo
+}
+
+func GetCfgDailySign() []CfgDailySign {
+	return ServerConfig.CfgDailySign
 }

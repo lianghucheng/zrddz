@@ -66,4 +66,5 @@ func init() {
 	msg.Processor.SetRouter(&msg.C2S_GetRedpacketTaskCode{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_SubsidyChip{}, game.ChanRPC)
 	msg.Processor.SetRouter(&msg.C2S_IsExistSubsidy{}, game.ChanRPC)
+	msg.Processor.SetRouter(&msg.C2S_DailySign{}, game.ChanRPC)
 }

@@ -262,6 +262,7 @@ func (user *User) onLogin(firstLogin bool, anotherLogin bool) {
 	//请求圈圈
 	user.requestCircleID()
 
+	user.sendDailySignItems()
 	/*
 		user.sendTaskList(firstLogin, func() {
 			user.WriteMsg(&msg.S2C_Login{

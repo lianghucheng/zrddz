@@ -48,6 +48,9 @@ type UserData struct {
 	SubsidyDeadLine int64 //救济过期时间
 	SubsidyTimes    int   //救济次数
 
+	SignTimes		int
+	DailySign		bool
+	DailySignDeadLine	int64
 }
 
 const defaultAvatar = "https://www.shenzhouxing.com/czddz/dl/img/logo.jpg"

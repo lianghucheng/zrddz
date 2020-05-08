@@ -1,5 +1,5 @@
 [CfgLeafSvr]
-    LogLevel="release"
+    LogLevel="debug"
 	LogPath= ""
 	TCPAddr= ":3550"
 	WSAddr= ":3658"
@@ -147,4 +147,18 @@
 	RedPacketType=999
 	IsPrivate=true
 	Clock=["00:00:00-23:59:59"]
-	
+
+[[CfgDailySign]]
+    Chips=500
+[[CfgDailySign]]
+    Chips=800
+[[CfgDailySign]]
+    Chips=1200
+[[CfgDailySign]]
+    Chips=2000
+[[CfgDailySign]]
+    Chips=3000
+[[CfgDailySign]]
+    Chips=5000
+[[CfgDailySign]]
+    Chips=10000

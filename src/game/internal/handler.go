@@ -64,6 +64,7 @@ func init() {
 	handler(&msg.C2S_GetRedpacketTaskCode{}, handleRedpacktTaskCode)
 	handler(&msg.C2S_SubsidyChip{}, handleSubsidyChip)
 	handler(&msg.C2S_IsExistSubsidy{}, handleIsExistSubsidy)
+	handler(&msg.C2S_DailySign{}, handleDailySign)
 }
 
 func handler(m interface{}, h interface{}) {
@@ -921,4 +922,20 @@ func handleIsExistSubsidy(args []interface{}) {
 		return
 	}
 	user.AskSubsidyChip()
+}
+
+func handleDailySign(args []interface{}) {
+	_ = args[0].(*msg.C2S_DailySign)
+	a := args[1].(gate.Agent)
+	if a.UserData() == nil {
+		a.Close()
+		return
+	}
+	user := a.UserData().(*AgentInfo).user
+	if user == nil {
+		a.Close()
+		return
+	}
+
+	user.dailySign()
 }

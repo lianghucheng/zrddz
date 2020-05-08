@@ -118,6 +118,10 @@ func init() {
 	Processor.Register(&C2S_SubsidyChip{})
 	Processor.Register(&S2C_SubsidyChip{})
 	Processor.Register(&C2S_IsExistSubsidy{})
+
+	Processor.Register(&C2S_DailySign{})
+	Processor.Register(&S2C_DailySign{})
+	Processor.Register(&S2C_DailySignItems{})
 }
 
 type C2S_Heartbeat struct{}
@@ -275,4 +279,28 @@ type C2S_SubsidyChip struct {
 }
 
 type C2S_IsExistSubsidy struct {
+}
+
+type C2S_DailySign struct {
+
+}
+
+type S2C_DailySign struct {
+	Chips		int64 //获取的金币
+}
+
+type S2C_DailySignItems struct {
+	SignItems 	[]DailySignItems
+	IsSign	 	bool //今日是否已签到
+}
+
+const (
+	SignFinish = 1
+	SignAccess = 2
+	SignDeny   = 3
+)
+
+type DailySignItems struct {
+	Chips	int64
+	Status  int
 }
