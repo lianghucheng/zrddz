@@ -6,7 +6,8 @@ import (
 )
 
 type Share struct {
-	CfgShareTasks []CfgShareTask
+	CfgShareTasks 		[]CfgShareTask
+	CfgShareCalcMethods	[]CfgShareCalcMethod
 }
 type CfgShareTask struct {
 	ID    int
@@ -15,6 +16,12 @@ type CfgShareTask struct {
 	Fee   float64
 	Desc  string
 	Info  string
+}
+
+type CfgShareCalcMethod struct {
+	AchieveScope 		int 	//业绩区间范围（万）
+	BackMoney			float64	//返佣金额比例（%）
+	DiffMoney			float64	//代理差返佣百分比例
 }
 
 var ShareCfg Share
@@ -28,4 +35,8 @@ func ShareCfgInit() {
 }
 func GetCfgShareTask() []CfgShareTask {
 	return ShareCfg.CfgShareTasks
+}
+
+func GetCfgShareCalcMethods() []CfgShareCalcMethod {
+	return ShareCfg.CfgShareCalcMethods
 }

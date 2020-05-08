@@ -55,3 +55,52 @@
 	Fee=0.0
 	Desc="充值任意金额"
 	Info="返利80%"
+
+[[CfgShareCalcMethods]]
+    AchieveScope=0
+    BackMoney=0.5
+    DiffMoney=0.1
+[[CfgShareCalcMethods]]
+    AchieveScope=50
+    BackMoney=1.0
+    DiffMoney=0.2
+[[CfgShareCalcMethods]]
+    AchieveScope=100
+    BackMoney=2.0
+    DiffMoney=0.5
+[[CfgShareCalcMethods]]
+    AchieveScope=200
+    BackMoney=5.0
+    DiffMoney=1.0
+[[CfgShareCalcMethods]]
+    AchieveScope=500
+    BackMoney=8.0
+    DiffMoney=2.0
+[[CfgShareCalcMethods]]
+    AchieveScope=1000
+    BackMoney=10.0
+    DiffMoney=3.0
+[[CfgShareCalcMethods]]
+    AchieveScope=2000
+    BackMoney=15.0
+    DiffMoney=4.0
+[[CfgShareCalcMethods]]
+    AchieveScope=5000
+    BackMoney=20.0
+    DiffMoney=5.0
+[[CfgShareCalcMethods]]
+    AchieveScope=10000
+    BackMoney=25.0
+    DiffMoney=7.0
+[[CfgShareCalcMethods]]
+    AchieveScope=20000
+    BackMoney=30.0
+    DiffMoney=10.0
+[[CfgShareCalcMethods]]
+    AchieveScope=50000
+    BackMoney=35.0
+    DiffMoney=15.0
+[[CfgShareCalcMethods]]
+    AchieveScope=100000
+    BackMoney=40.0
+    DiffMoney=25.0
