@@ -16,7 +16,6 @@ func (user *User) AskSubsidyChip() {
 
 	if user.baseData.userData.Chips < int64(conf.Server.SubsidyLine) && user.baseData.userData.SubsidyTimes < 2 {
 		user.WriteMsg(&msg.S2C_SubsidyChip{
-
 			SubsidyTimes: user.baseData.userData.SubsidyTimes + 1,
 			TotalTimes:   conf.Server.SubsidyTotal,
 			Chip:         conf.Server.SubsidyChip,
