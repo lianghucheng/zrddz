@@ -602,12 +602,12 @@ func (roomm *LandlordRoom) EndGame() {
 			roomm.calculateChips(userID, playerData.roundResult.Chips) // 结算筹码
 		}
 	}
-
-	for _, userID := range roomm.positionUserIDs {
-		playerData := roomm.userIDPlayerDatas[userID]
-		playerData.user.AskSubsidyChip()
-	}
-
+	/*
+		for _, userID := range roomm.positionUserIDs {
+			playerData := roomm.userIDPlayerDatas[userID]
+			playerData.user.AskSubsidyChip()
+		}
+	*/
 	roomm.endTimestamp = time.Now().Unix()
 	//保存战绩
 	room := roomm
@@ -690,6 +690,8 @@ func (roomm *LandlordRoom) EndGame() {
 			playerData := roomm.userIDPlayerDatas[userID]
 			//playerData.user.offerSubsidy()
 			roomm.sendRoundResult(userID, playerData.roundResults)
+			playerData.user.AskSubsidyChip()
+
 		}
 		roomm.state = roomIdle
 		for _, userID := range roomm.positionUserIDs {
@@ -1055,6 +1057,54 @@ func (roomm *LandlordRoom) decideWinner() {
 		roomm.userIDPlayerDatas[userID].user.clearRedPacketTask(2008)
 		roomm.userIDPlayerDatas[userID].user.clearRedPacketTask(3004)
 		roomm.userIDPlayerDatas[userID].user.clearRedPacketTask(1001)
+		//计入流水(竞技场计入流水)
+		if roomm.rule.RoomType == basescoreMatching && !roomm.userIDPlayerDatas[userID].user.isRobot() {
+
+			//自己的流水记录
+			a := &AgentProfit{
+				Accountid:       roomm.userIDPlayerDatas[userID].user.baseData.userData.AccountID,
+				FirstLevelChips: 0,
+				OtherLevelChips: 0,
+				CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+				Str:             common.TimeFormat(),
+				Chips:           int64(-roomm.userIDPlayerDatas[userID].roundResult.Chips),
+			}
+			a.insert()
+			if roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId != 0 {
+				a = &AgentProfit{
+					Accountid:       int(roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId),
+					FirstLevelChips: int64(-roomm.userIDPlayerDatas[userID].roundResult.Chips),
+					OtherLevelChips: 0,
+					CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+					Str:             common.TimeFormat(),
+					Chips:           0,
+				}
+				a.insert()
+
+				accountid := roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId
+			Label:
+				for {
+
+					data := new(UserData)
+					data.readByAccountID(accountid)
+					if data.ParentId != 0 {
+						accountid = data.ParentId
+						a = &AgentProfit{
+							Accountid:       int(accountid),
+							FirstLevelChips: 0,
+							OtherLevelChips: int64(-roomm.userIDPlayerDatas[userID].roundResult.Chips),
+							CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+							Str:             common.TimeFormat(),
+							Chips:           0,
+						}
+						a.insert()
+						continue
+					}
+					break Label
+
+				}
+			}
+		}
 	}
 	for _, userID := range roomm.winnerUserIDs {
 		//初级任务 明牌获胜3次 1015
@@ -1099,6 +1149,53 @@ func (roomm *LandlordRoom) decideWinner() {
 		switch roomm.rule.RoomType {
 		case roomBaseScoreMatching, roomBaseScorePrivate, roomVIPPrivate, roomRedPacketMatching, roomRedPacketPrivate:
 			upsertMonthWinsRank(userID, 1)
+		}
+		//计入流水(竞技场计入流水)
+		if roomm.rule.RoomType == basescoreMatching && !roomm.userIDPlayerDatas[userID].user.isRobot() {
+
+			//自己的流水记录
+			a := &AgentProfit{
+				Accountid:       roomm.userIDPlayerDatas[userID].user.baseData.userData.AccountID,
+				FirstLevelChips: 0,
+				OtherLevelChips: 0,
+				CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+				Str:             common.TimeFormat(),
+				Chips:           int64(roomm.userIDPlayerDatas[userID].roundResult.Chips),
+			}
+			a.insert()
+			if roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId != 0 {
+				a = &AgentProfit{
+					Accountid:       int(roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId),
+					FirstLevelChips: int64(roomm.userIDPlayerDatas[userID].roundResult.Chips),
+					OtherLevelChips: 0,
+					CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+					Str:             common.TimeFormat(),
+					Chips:           0,
+				}
+				a.insert()
+				accountid := roomm.userIDPlayerDatas[userID].user.baseData.userData.ParentId
+			Label1:
+				for {
+
+					data := new(UserData)
+					data.readByAccountID(accountid)
+					if data.ParentId != 0 {
+						accountid = data.ParentId
+						a = &AgentProfit{
+							Accountid:       int(accountid),
+							FirstLevelChips: 0,
+							OtherLevelChips: int64(roomm.userIDPlayerDatas[userID].roundResult.Chips),
+							CreateDat:       common.OneDay0ClockTimestamp(time.Now()),
+							Str:             common.TimeFormat(),
+							Chips:           0,
+						}
+						a.insert()
+						continue
+					}
+					break Label1
+
+				}
+			}
 		}
 	}
 }
