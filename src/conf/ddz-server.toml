@@ -15,10 +15,8 @@
 	FamilyActivity=true
 	RoomCard=8  #新人送八张房卡
 	FirstLogin=6000 #新人送6000金币
-	OfferSubsidy=2000 #破产补助金额
-	LessChips=1000 #玩家金币少于多少给予破产补助
 	Model=false
-	SubsidyLine = 2000  #破产补助金额
+	SubsidyLine = 1000  #破产补助金额
     SubsidyChip = 2000   #玩家金币少于多少给予破产补助
     SubsidyTotal = 2
   [CfgRank]

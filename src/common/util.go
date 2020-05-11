@@ -95,3 +95,7 @@ func GetTodayCode(n int) string {
 func OneDay0ClockTimestamp(t time.Time) int64 {
 	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location()).Unix()
 }
+
+func TimeFormat() string {
+	return time.Now().Format("20060102")
+}
