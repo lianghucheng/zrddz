@@ -42,6 +42,9 @@ func (user *User) TakenSubsidyChip(reply bool) {
 			user.WriteMsg(&msg.S2C_UpdateUserChips{
 				Chips: user.baseData.userData.Chips,
 			})
+			user.WriteMsg(&msg.S2C_TakenSubsidyChip{
+				Chip: conf.Server.SubsidyChip,
+			})
 			saveUserData(user.baseData.userData)
 			WriteChipsRecord(user.baseData.userData, int64(conf.Server.SubsidyChip), subsidyChip)
 		} else if user.baseData.userData.SubsidyTimes >= 2 {

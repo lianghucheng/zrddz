@@ -117,6 +117,7 @@ func init() {
 	Processor.Register(&S2C_CircleLink{})
 	Processor.Register(&C2S_SubsidyChip{})
 	Processor.Register(&S2C_SubsidyChip{})
+	Processor.Register(&S2C_TakenSubsidyChip{})
 	Processor.Register(&C2S_IsExistSubsidy{})
 
 	Processor.Register(&C2S_DailySign{})
@@ -272,6 +273,10 @@ type S2C_SubsidyChip struct {
 	Chip 	int
 	SubsidyTimes	int
 	TotalTimes		int
+}
+
+type S2C_TakenSubsidyChip struct {
+	Chip 	int
 }
 
 type C2S_SubsidyChip struct {

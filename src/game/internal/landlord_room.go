@@ -602,12 +602,6 @@ func (roomm *LandlordRoom) EndGame() {
 			roomm.calculateChips(userID, playerData.roundResult.Chips) // 结算筹码
 		}
 	}
-
-	for _, userID := range roomm.positionUserIDs {
-		playerData := roomm.userIDPlayerDatas[userID]
-		playerData.user.AskSubsidyChip()
-	}
-
 	roomm.endTimestamp = time.Now().Unix()
 	//保存战绩
 	room := roomm
@@ -690,7 +684,9 @@ func (roomm *LandlordRoom) EndGame() {
 			playerData := roomm.userIDPlayerDatas[userID]
 			//playerData.user.offerSubsidy()
 			roomm.sendRoundResult(userID, playerData.roundResults)
+			playerData.user.AskSubsidyChip()
 		}
+
 		roomm.state = roomIdle
 		for _, userID := range roomm.positionUserIDs {
 			switch roomm.rule.RoomType {
