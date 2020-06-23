@@ -42,9 +42,12 @@ func (data *ConfigData) initLandlord() {
 	data.IOSDownloadUrl = conf.GetCfgDDZ().DefaultIOSDownloadUrl
 	data.SougouVersion = conf.GetCfgDDZ().SougouVersion
 	data.SougouDownloadUrl = conf.GetCfgDDZ().DefaultSougouDownloadUrl
+	data.GoogleVersion = conf.GetCfgDDZ().GoogleVersion
+	data.GoogleDownloadUrl = conf.GetCfgDDZ().DefaultGoogleDownloadUrl
 	data.AndroidGuestLogin = conf.GetCfgDDZ().AndroidGuestLogin
 	data.IOSGuestLogin = conf.GetCfgDDZ().IOSGuestLogin
 	data.SougouGuestLogin = conf.GetCfgDDZ().SougouGuestLogin
+	data.GoogleGuestLogin = conf.GetCfgDDZ().GoogleGuestLogin
 	data.Notice = conf.GetCfgDDZ().Notice
 	data.Radio = conf.GetCfgDDZ().Radio
 	data.WeChatNumber = conf.GetCfgDDZ().WeChatNumber

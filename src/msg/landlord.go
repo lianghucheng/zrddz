@@ -11,9 +11,12 @@ type C2S_SetLandlordConfig struct {
 	IOSDownloadUrl     string // iOS 下载链接
 	SougouVersion	   int    // Sougou 版本号
 	SougouDownloadUrl  string // Sougou 下载链接
+	GoogleVersion	   int    // Sougou 版本号
+	GoogleDownloadUrl  string // Sougou 下载链接
 	AndroidGuestLogin  bool   // Android 游客登录
 	IOSGuestLogin      bool   // iOS 游客登录
 	SougouGuestLogin   bool
+	GoogleGuestLogin   bool
 	Notice             string // 公告
 	Radio              string // 广播
 	WeChatNumber       string // 客服微信号

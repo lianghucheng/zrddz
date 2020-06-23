@@ -30,6 +30,7 @@ func startHTTPServer() {
 	mux.Handle("/czddz/android", http.HandlerFunc(handleCZDDZAndroid))
 	mux.Handle("/czddz/ios", http.HandlerFunc(handleCZDDZIOS))
 	mux.Handle("/czddz/sougou", http.HandlerFunc(handleCZDDZSougou))
+	mux.Handle("/czddz/google", http.HandlerFunc(handleCZDDZGoogle))
 	mux.Handle("/alipay", http.HandlerFunc(handleAliPay))
 	mux.Handle("/wxpay", http.HandlerFunc(handleWXPay))
 	mux.Handle("/invite", http.HandlerFunc(handleInvite))
@@ -84,6 +85,22 @@ func handleCZDDZSougou(w http.ResponseWriter, req *http.Request) {
 	m["version"] = landlordConfigData.SougouVersion
 	m["downloadurl"] = landlordConfigData.SougouDownloadUrl
 	m["guestlogin"] = landlordConfigData.SougouGuestLogin
+	m["enteraddress"] = landlordConfigData.EnterAddress
+	m["online"] = len(userIDUsers)
+	data, err := json.Marshal(m)
+	if err != nil {
+		log.Error("marshal message %v error: %v", reflect.TypeOf(m), err)
+		return
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, "%s", data)
+}
+
+func handleCZDDZGoogle(w http.ResponseWriter, req *http.Request) {
+	m := map[string]interface{}{}
+	m["version"] = landlordConfigData.GoogleVersion
+	m["downloadurl"] = landlordConfigData.GoogleDownloadUrl
+	m["guestlogin"] = landlordConfigData.GoogleGuestLogin
 	m["enteraddress"] = landlordConfigData.EnterAddress
 	m["online"] = len(userIDUsers)
 	data, err := json.Marshal(m)

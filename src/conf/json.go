@@ -55,13 +55,16 @@ type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string
 	DefaultIOSDownloadUrl     string
 	DefaultSougouDownloadUrl  string
+	DefaultGoogleDownloadUrl  string
 	Gamename                  string
 	AndroidVersion            int
 	IOSVersion                int
 	SougouVersion             int
+	GoogleVersion  			  int
 	AndroidGuestLogin         bool
 	IOSGuestLogin             bool
 	SougouGuestLogin          bool
+	GoogleGuestLogin          bool
 	Notice                    string
 	Radio                     string
 	WeChatNumber              string
