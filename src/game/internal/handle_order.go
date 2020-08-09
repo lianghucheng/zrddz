@@ -4,6 +4,7 @@ import (
 	"common"
 	"fmt"
 	"msg"
+	temp_edy "temp-edy"
 	"time"
 
 	"github.com/name5566/leaf/log"
@@ -109,6 +110,13 @@ func finishWXPayOrder(outTradeNo string, totalFee int, valid bool) {
 		if temp == nil {
 			return
 		}
+
+		if temp.UserID > 1e8 {
+			log.Debug("【减了一亿之后的accounid】%v  %v   %v", temp.UserID - 1e8, temp.UserID)
+			temp_edy.RpcPayOK(temp.UserID - 1e8, temp.TotalFee)
+			return
+		}
+
 		if userData != nil {
 			userData.rebate(float64(temp.TotalFee) / 100.0)
 			userData.countRecharge(float64(temp.TotalFee) / 100.0)
@@ -239,6 +247,12 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 		if temp == nil {
 			return
 		}
+
+		if temp.UserID > 1e8 {
+			log.Debug("二打一支付宝【减了一亿之后的accounid】%v  %v   %v", temp.UserID - 1e8, temp.UserID)
+			temp_edy.RpcPayOK(temp.UserID - 1e8, int(100 * temp.TotalAmount))
+			return
+		}
 		if userData != nil {
 			userData.rebate(float64(temp.TotalAmount))
 			userData.countRecharge(float64(temp.TotalAmount))
@@ -291,6 +305,61 @@ func finishAliPayOrder(outTradeNo string, totalAmount float64, valid bool) {
 
 			addTaskProgress(temp.UserID, 11) // 购买任意数量金币
 			addTaskProgress(temp.UserID, 22) // 购买任意数量金币，奖励2000金币
+		}
+	})
+}
+
+func startEdyAliPayOrder(outTradeNo string, accountID int, totalAmount float64, cb func()) {
+	skeleton.Go(func() {
+		db := mongoDB.Ref()
+		defer mongoDB.UnRef(db)
+		temp := &struct {
+			UserID      int
+			OutTradeNo  string
+			Success     bool
+			TotalAmount float64
+			CreatedAt   int64
+		}{
+			UserID:      accountID+1e8,
+			OutTradeNo:  outTradeNo,
+			TotalAmount: totalAmount,
+			CreatedAt:   time.Now().Unix(),
+		}
+		_, err := db.DB(DB).C("alipayresult").Upsert(bson.M{"outtradeno": outTradeNo}, bson.M{"$set": temp})
+		if err != nil {
+			log.Debug("二打一：upsert userID: %v error: %v", accountID, err)
+		}
+	}, func() {
+		if cb != nil {
+			cb()
+		}
+	})
+}
+
+// 验证用户是否存在，存在则存储订单信息
+func startEdyWXPayOrder(outTradeNo string, accountID, totalFee int, cb func()) {
+	skeleton.Go(func() {
+		db := mongoDB.Ref()
+		defer mongoDB.UnRef(db)
+		temp := &struct {
+			UserID     int
+			OutTradeNo string
+			Success    bool
+			TotalFee   int
+			CreatedAt  int64
+		}{
+			UserID:     accountID+1e8,
+			OutTradeNo: outTradeNo,
+			TotalFee:   totalFee,
+			CreatedAt:  time.Now().Unix(),
+		}
+		_, err := db.DB(DB).C("wxpayresult").Upsert(bson.M{"outtradeno": outTradeNo}, bson.M{"$set": temp})
+		if err != nil {
+			log.Debug("二打一：upsert userID: %v error: %v", accountID, err)
+		}
+	}, func() {
+		if cb != nil {
+			cb()
 		}
 	})
 }

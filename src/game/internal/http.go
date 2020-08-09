@@ -33,6 +33,8 @@ func startHTTPServer() {
 	mux.Handle("/czddz/google", http.HandlerFunc(handleCZDDZGoogle))
 	mux.Handle("/alipay", http.HandlerFunc(handleAliPay))
 	mux.Handle("/wxpay", http.HandlerFunc(handleWXPay))
+	mux.Handle("/edywxpay", http.HandlerFunc(handleEdyWXPay))
+	mux.Handle("/edyalipay", http.HandlerFunc(handleEdyAliPay))
 	mux.Handle("/invite", http.HandlerFunc(handleInvite))
 	mux.HandleFunc("/exit", handleDeal)
 	mux.HandleFunc("/set/system", handleSystem)
@@ -41,6 +43,7 @@ func startHTTPServer() {
 
 	mux.HandleFunc("/fakeralipay", handleFakerAliPay)
 	mux.HandleFunc("/fakerwxpay", handleFakerWXPay)
+	mux.HandleFunc("/edyfakerwxpay", handleEdyWXPay)
 	mux.HandleFunc("/fakerrprecord", handleFakerRedPacketRecord)
 	err := http.ListenAndServe(conf.Server.HTTPAddr, mux)
 	if err != nil {
