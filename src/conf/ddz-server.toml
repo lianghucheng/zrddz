@@ -19,6 +19,7 @@
 	SubsidyLine = 1000  #破产补助金额
     SubsidyChip = 2000   #玩家金币少于多少给予破产补助
     SubsidyTotal = 2
+    GameHttpAddress = "http://123.207.12.67:9084"
   [CfgRank]
   ShowRankLen=100   #显示排行榜前多少名
   UpdateRankTime=1 #多久刷新一次排行榜榜单 时

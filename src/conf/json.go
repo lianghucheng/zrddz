@@ -50,6 +50,7 @@ type LeafSvr struct {
 	SubsidyTotal   int  //补助次数
 	SubsidyChip    int  //破产补助金额
 	SubsidyLine    int  //资产低于多少给予破产补助
+	GameHttpAddress string
 }
 type CfgDDZ struct {
 	DefaultAndroidDownloadUrl string

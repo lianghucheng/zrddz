@@ -4,6 +4,7 @@ import (
 	"conf"
 	"game"
 	"gate"
+	"github.com/name5566/leaf/log"
 	"login"
 	"os"
 	"os/signal"
@@ -15,6 +16,7 @@ import (
 )
 
 func main() {
+	log.Debug("dididi")
 	lconf.LogLevel = conf.Server.LogLevel
 	lconf.LogPath = conf.Server.LogPath
 	lconf.LogFlag = conf.LogFlag

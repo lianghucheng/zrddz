@@ -194,6 +194,7 @@ func handleEdyAliPay(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		total_amount := r.URL.Query().Get("total_amount")
 		account_id := r.URL.Query().Get("account_id")
+		fmt.Println("二打一支付宝支付，接收参数：total_amount=",total_amount, "account_id=", account_id)
 		if total_amount == "" || account_id == "" {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprintf(w, "%v", "no total_amount or account_id")
